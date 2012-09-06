@@ -1,0 +1,35 @@
+<h1>Listing ledgers</h1>
+
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Order number</th>
+    <th>Payment type</th>
+    <th>Payment method</th>
+    <th>Amount</th>
+    <th>Payment date</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @ledgers.each do |ledger| %>
+  <tr>
+    <td><%= ledger.id %></td>
+    <td><%= ledger.order_number %></td>
+    <td><%= ledger.payment_type %></td>
+    <td><%= ledger.payment_method %></td>
+    <td><%= ledger.amount %></td>
+    <td><%= ledger.payment_date %></td>
+    <td><%= ledger.status %></td>
+    <td><%= link_to 'Show', ledger %></td>
+    <td><%= link_to 'Edit', edit_ledger_path(ledger) %></td>
+    <td><%= link_to 'Destroy', ledger, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Ledger', new_ledger_path %>

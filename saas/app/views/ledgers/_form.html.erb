@@ -1,0 +1,45 @@
+<%= form_for(@ledger) do |f| %>
+  <% if @ledger.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@ledger.errors.count, "error") %> prohibited this ledger from being saved:</h2>
+
+      <ul>
+      <% @ledger.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :id %><br />
+    <%= f.text_field :id %>
+  </div>
+  <div class="field">
+    <%= f.label :order_number %><br />
+    <%= f.text_field :order_number %>
+  </div>
+  <div class="field">
+    <%= f.label :payment_type %><br />
+    <%= f.text_field :payment_type %>
+  </div>
+  <div class="field">
+    <%= f.label :payment_method %><br />
+    <%= f.text_field :payment_method %>
+  </div>
+  <div class="field">
+    <%= f.label :amount %><br />
+    <%= f.text_field :amount %>
+  </div>
+  <div class="field">
+    <%= f.label :payment_date %><br />
+    <%= f.date_select :payment_date %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br />
+    <%= f.text_field :status %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

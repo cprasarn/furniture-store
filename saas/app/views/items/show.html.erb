@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col bold">Order number:</div>
+  <div class="col"><%= @item.order_number %></div>
+</div>
+
+<div class="row">
+  <div class="col bold">Item Picture</div>
+  <div class="col"><%= image_tag @item.image_uri %></div>
+</div>
+
+<div class="row">
+  <div class="col bold">Description:</div>
+  <div class="col"><%= @item.description %></div>
+</div>
+
+<div class="row">
+  <div class="col bold">Price</div>
+  <div class="col"><%= @item.price %></div>
+</div>
+<div class="row">
+  <div class="col bold">Finishing Cost</div>
+  <div class="col"><%= @item.finishing_cost %></div>
+</div>
+  
+<%= link_to 'Edit', edit_item_path(@item) %> |
+<%= link_to 'Back', items_path %>

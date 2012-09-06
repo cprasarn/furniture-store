@@ -1,0 +1,20 @@
+    <% @items.each do |item| %>
+      <div class="row">
+        <div class="col" style="width:10%"><%= item.text_field :quantity,
+          :class => 'custom_text short',
+          :readonly => 'true' %></div>
+        <div class="col" style="width:20%"><%= item.text_area :wood,
+          :class => 'custom_text medium',
+          :rows => '2',
+          :readonly => 'true' %></div>
+        <div class="col" style="width:25%"><%= item.text_area :finish,
+          :rows => '2',
+          :readonly => 'true' %></div>
+        <div class="col" style="width:25%"><%= item.text_area :description,
+          :rows => '2',
+          :readonly => 'true' %></div>
+        <div class="col" style="width:10%">
+          <%= image_tag item.image_uri %>
+        </div>
+      </div>
+    <% end %>    

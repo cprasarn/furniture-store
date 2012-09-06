@@ -1,0 +1,21 @@
+<h1>Order Search</h1>
+
+<%= render 'search_form' %>
+
+<% if @orders %>
+  <% @orders.each do |order| %>
+  <div class="row">
+    <div class="col" style="width:20%"><%= order.order_number %></div>
+    <div class="col" style="width:20%"><%= order.customer.name %></div>
+    <div class="col" style="width:15%"><%= order.price %></div>
+    <div class="col" style="width:15%"><%= order.items.size %></div>
+    <div class="col" style="width:20%">
+        <%= link_to "Show", order %>
+        &nbsp;
+        <%= link_to "Edit", edit_order_path(order) %>
+    </div>
+  </div>
+  <% end %>
+<% end %>
+
+<%= link_to 'Back', orders_path %>

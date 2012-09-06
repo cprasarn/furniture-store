@@ -1,0 +1,68 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col bold" style="width:20%;">Customer Number:</div>
+  <div class="col"><%= @customer.id %></div>
+</div>
+
+<div class="row">
+  <div class="col bold" style="width:20%;">Name:</div>
+  <div class="col"><%= @customer.name %></div>
+</div>
+
+<div class="row">
+  <div class="col bold" style="width:20%;">Email:</div>
+  <div class="col"><%= @customer.email %></div>
+</div>
+
+<div class="row">
+    <div class="col bold" style="width:20%;">Home Phone:</div>
+    <div class="col"><%= @customer.home_phone %></div>
+</div>
+<div class="row">
+    <div class="col bold" style="width:20%;">Business Phone:</div>
+    <div class="col"><%= @customer.business_phone %></div>
+</div>
+<div class="row">
+    <div class="col bold" style="width:20%;">Mobile Phone:</div>
+    <div class="col"><%= @customer.mobile_phone %></div>
+</div>
+<div class="row">
+    <div class="col bold" style="width:20%;">Fax</div>
+    <div class="col"><%= @customer.fax %></div>
+</div>
+
+<div class="row">
+  <div class="col bold" style="width:20%;">Status:</div>
+  <div class="col"><%= @status_table[@customer.status] %></div>
+</div>
+
+<div id="orders_list" style="margin-top:20px;">
+  <div class="sub_portlet">
+    <div class="left">Order History</div>
+    <div class="right link_action">
+      <%= link_to "New Order", new_order_path(:customer_id => @customer.id) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col header" style="width:30%">Order Number</div>
+    <div class="col header" style="width:40%">Order Date</div>
+    <div class="col_r header" style="width:15%">Actions</div>
+  </div>
+  <% @customer.orders.each do |order| %>
+  <div class="row">
+    <div class="col" style="width:30%"><%= order.order_number %></div>
+    <div class="col" style="width:40%">
+        <%= order.order_date.strftime('%m/%d/%Y') %>
+    </div>
+    <div class="col_r" style="width:15%;">
+        <%= link_to "Show", order %>
+        <%= link_to "Edit", edit_order_path(order) %>
+        <%= link_to 'Remove', order, confirm: 'Are you sure?', method: :delete %>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<%= link_to 'Edit', edit_customer_path(@customer) %> |
+<%= link_to 'Back', customers_path %>

@@ -1,0 +1,37 @@
+<h1>Listing items</h1>
+
+<div class="hero-unit">
+  <div class="portlet">
+    <div class="left">Items</div>
+    <div class="right link_action">
+      <%= link_to "New Item", new_item_path %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col bold" style="width:15%">Order Number</div>
+    <div class="col bold" style="width:25%">Description</div>
+    <div class="col bold" style="width:20%">Item</div>
+    <div class="col bold" style="width:10%">Quantity</div>
+    <div class="col bold" style="width:20%">Actions</div>
+  </div>
+  <% @items.each do |item| %>
+  <div class="row">
+    <div class="col" style="width:15%"><%= item.order_number %></div>
+    <div class="col" style="width:25%"><%= item.description %></div>
+    <div class="col" style="width:20%">
+        <%= image_tag item.image_uri %>
+    </div>
+    <div class="col" style="width:10%; text-align:center;"><%= item.quantity %></div>
+    <div class="col" style="width:20%">
+        <%= link_to "Show", item %>
+        <%= link_to "Edit", edit_item_path(item) %>
+        <%= link_to 'Remove', item, confirm: 'Are you sure?', method: :delete %>
+    </div>
+  </div>
+  <% end %>
+  <div class="row">
+    <div class="col_r">
+      <%= will_paginate @items %>
+    </div>
+  </div>
+</div>

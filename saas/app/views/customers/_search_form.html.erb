@@ -1,0 +1,7 @@
+<%= form_tag("/customers/search", :method => "get") do %>
+  <div class="row">
+    <div class="col"><%= label_tag(:customer_name, "Customer Name:") %></div>
+    <div class="col"><%= search_field_tag(:customer_number) %></div>
+  </div>
+  <%= submit_tag("Search") %>
+<% end %>

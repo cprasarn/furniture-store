@@ -1,0 +1,78 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row">
+  <div class="col header name">Order Number:</div>
+  <div class="col info"><%= @order.order_number %></div>
+</div>
+<div class="row">
+  <div class="col header name">Order Date:</div>
+  <div class="col"><%= (@order.order_date.blank? ? '' : @order.order_date.strftime('%m/%d/%Y')) %></div>
+</div>
+<div class="row">
+  <div class="col header name">Customer:</div>
+  <div class="col"><%= @order.customer.name %></div>
+  <div class="col action" style="display:none;">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col header name">Lead Source:</div>
+  <div class="col"><%= @order.lead_source %></div>
+</div>
+
+<div>
+  <div class="row">
+    <div class="col name">Total Price:</div>
+    <div class="col"><%= @order.price %></div>
+  </div>
+    
+  <div class="row">
+    <div class="col name">Delivery Option:</div>
+    <div class="col"><%= @order.delivery_option %></div>
+  </div>
+    
+  <div class="row">
+    <div class="col name">Delivery Charge:</div>
+    <div class="col"><%= @order.delivery_charge %></div>
+  </div>
+    
+  <div class="row">
+    <div class="col name">Sales Tax:</div>
+    <div class="col"><%= @order.sales_tax %></div>
+  </div>
+    
+  <div class="row">
+    <div class="col name">Remaining Balance:</div>
+    <div class="col"><%= @order.balance %></div>
+  </div>
+</div>
+
+<div id="items_list" style="margin-top:20px;">
+  <div class="sub_portlet">
+    <div class="left">List of items under this order</div>
+    <div class="right link_action">
+      <%= link_to "New Item", new_item_path(:order_number => @order.order_number) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col header" style="width:30%">Description</div>
+    <div class="col header" style="width:40%">Item</div>
+    <div class="col_r header" style="width:15%">Actions</div>
+  </div>
+  <% @order.items.each do |item| %>
+  <div class="row">
+    <div class="col" style="width:30%"><%= item.description %></div>
+    <div class="col" style="width:40%">
+        <%= image_tag item.image_uri %>
+    </div>
+    <div class="col_r" style="width:15%;">
+        <%= link_to "Show", item %>
+        <%= link_to "Edit", edit_item_path(item) %>
+        <%= link_to 'Remove', item, confirm: 'Are you sure?', method: :delete %>
+    </div>
+  </div>
+  <% end %>
+</div>
+
+<%= link_to 'Edit', edit_order_path(@order) %> |
+<%= link_to 'Back', orders_path %>

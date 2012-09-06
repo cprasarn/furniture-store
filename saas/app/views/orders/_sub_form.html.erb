@@ -1,0 +1,38 @@
+<div id="order_detail" class="sub_form">
+  <% fields_for @order do |order| %>
+  <div class="row">
+    <div class="col name"><%= order.label :lead_source, lead_source %></div>
+    <div class="col">
+        <%= order.collection_select(:lead_source, @lead_source_list, :key, :option, { :prompt => 'select...' } ) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col name"><%= order.label :delivery_option %></div>
+    <div class="col">
+        <%= order.collection_select(:delivery_option, @delivery_option_list, :key, :option, { :prompt => 'select...' } ) %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col name"><%= order.label :delivery_charge %></div>
+    <div class="col"><%= order.text_field :delivery_charge %></div>
+  </div>
+  <div class="row">
+    <div class="col name"><%= order.label :deposit %></div>
+    <div class="col"><%= order.text_field :deposit %></div>
+  </div>
+  <div class="row">
+    <div class="col name"><%= order.label :balance %></div>
+    <div class="col"><%= order.text_field :balance %></div>
+  </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col_r">
+      <%= button_tag "Submit",
+        :id => "order_submit_button",
+        :name => "order_submit_button",
+        :type => "button" 
+      %>
+    </div>
+  </div>
+</div>

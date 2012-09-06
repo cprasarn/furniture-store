@@ -1,0 +1,31 @@
+<h1>Listing customers_addresses</h1>
+
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Customer</th>
+    <th>Address</th>
+    <th>Type</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @customers_addresses.each do |customers_address| %>
+  <tr>
+    <td><%= customers_address.id %></td>
+    <td><%= customers_address.customer_id %></td>
+    <td><%= customers_address.address_id %></td>
+    <td><%= customers_address.type %></td>
+    <td><%= customers_address.status %></td>
+    <td><%= link_to 'Show', customers_address %></td>
+    <td><%= link_to 'Edit', edit_customers_address_path(customers_address) %></td>
+    <td><%= link_to 'Destroy', customers_address, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Customers address', new_customers_address_path %>

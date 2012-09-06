@@ -1,0 +1,308 @@
+<%= form_for @order, :html => { :multipart => true}, :remote => @order.new_record? do |order| %>
+  <% if @order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+      <% @order.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Order Detail -->
+  <div id="order_detail" class="row">
+    <div class="col" style="width:40%">
+      <div class="row">
+        <div class="col name" style="width:30%"><%= order.label :order_date, 'DATE' %></div>
+        <div class="col"><%= order.text_field :order_date, 
+          :id => 'order_date',
+          :value => @order.order_date.strftime('%m/%d/%Y'),
+          :readonly => 'true' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:30%"><%= order.label :order_number, 'ORDER#' %></div>
+        <div class="col">
+          <%= order.label :order_number, 'NEW ORDER' %>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+    <div class="col" style="width:50%">
+      <div class="row">
+        <div class="col" style="width:45%"><%= order.label :estimated_time, 'Estimated Completion Time' %></div>
+        <div class="col" style="width:45%">
+          <%= order.collection_select(:estimated_time, 
+            @estimated_time_list, 
+            :key, 
+            :option, 
+            { :prompt => 'select...' } ) %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= order.label :delivery_option, 'DELIVERY OPTION' %></div>
+        <div class="col" style="width:45%">
+          <%= order.collection_select(:delivery_option, 
+            @delivery_option_list, 
+            :key, 
+            :option, 
+            { :prompt => 'select...' } ) %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Detail -->
+  <div id="customer_detail" class="row">
+    <%= fields_for :customer, @customer do |customer| %>
+    <%= customer.hidden_field :id %>
+    <div class="col" style="width:40%">
+      <div class="row">
+        <div class="col name" style="width:30%"><%= customer.label :name, 'NAME' %></div>
+        <div class="col"><%= customer.text_field :name,
+          :id => 'customer_name' %></div>
+      </div>
+      <%= fields_for :address, @address do |address| %>
+      <%= address.hidden_field :id %>
+      <div class="row">
+        <div class="col name" style="width:30%"><%= address.label :street1, 'ADDRESS' %></div>
+        <div class="col">
+          <%= address.text_field :street1,
+            :value => 'street 1' %><br />
+          <%= address.text_field :street2,
+            :value => 'street 2' %><br />
+          <%= address.text_field :city,
+            :value => 'city' %><br />
+          <%= address.collection_select(:state, 
+            @state_list, 
+            :abbreviation, 
+            :abbreviation, 
+            { :prompt => 'state...' } ) %><br />
+          <%= address.text_field :zip_code,
+            :value => 'zip code' %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <div class="col"></div>
+    <div class="col" style="width:50%">
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :home_phone, 'PHONE' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.telephone_field :home_phone,
+            :id => 'home_phone' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :mobile_phone, 'MOBILE' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.telephone_field :mobile_phone,
+            :id => 'mobile_phone' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :business_phone, 'WORK' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.telephone_field :business_phone,
+            :id => 'business_phone' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :fax, 'FAX' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.telephone_field :fax,
+            :id => 'fax' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :email, 'EMAIL' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.email_field :email,
+            :id => 'email' %>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  
+  <!-- Item -->
+  <div id="items">
+    <%= fields_for :item, @item do |new_item| %>
+    <div class="row header">
+      <div class="col header" style="width:10%">QTY</div>
+      <div class="col header" style="width:20%">WOOD</div>
+      <div class="col header" style="width:25%">FINISH</div>
+      <div class="col header" style="width:25%">DESCRIPTION (h x w x d)</div>
+      <div class="col header" style="width:10%">PICTURE</div>
+    </div>
+    <div id="items_list">
+      <% if @items %>
+      <div class="row">
+        <div class="col" style="width:10%"><%= item.text_field :quantity,
+          :class => 'custom_text short',
+          :readonly => 'true' %></div>
+        <div class="col" style="width:20%"><%= item.text_area :wood,
+          :class => 'custom_text medium',
+          :rows => '2',
+          :readonly => 'true' %></div>
+        <div class="col" style="width:25%"><%= item.text_area :finish,
+          :rows => '2',
+          :readonly => 'true' %></div>
+        <div class="col" style="width:25%"><%= item.text_area :description,
+          :rows => '2',
+          :readonly => 'true' %></div>
+        <div class="col" style="width:10%">
+          <%= image_tag @item.image_uri %>
+        </div>
+      </div>    
+      <% end %>
+    </div>
+    <div class="row">
+      <div class="col" style="width:10%"><%= new_item.text_field :quantity,
+        :class => 'custom_text short',
+        :size => '5',  
+        :maxlength => '5' %></div>
+      <div class="col" style="width:20%"><%= new_item.text_area :wood,
+        :class => 'custom_text medium',
+        :rows => '2' %></div>
+      <div class="col" style="width:25%"><%= new_item.text_area :finish,
+        :rows => '2' %></div>
+      <div class="col" style="width:25%"><%= new_item.text_area :description,
+        :rows => '2' %></div>
+      <% if nil == @sketchup %>
+      <div class="col" style="width:10%"><%= new_item.file_field :image_file %></div>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+  
+  <!-- Order Payment -->
+  <div id="order_ledger" class="row" style="padding-top:40px;">
+    <div id="order_charge" class="col payment" style="width:40%">
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :price, 'Price w/o finish' %></div>
+        <div class="col">&#36;<%= order.text_field :price,
+          :class => 'custom_text short right',
+          :onchange => 'Order.update_tax_and_subtotal();' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :sales_tax, 'Tax' %></div>
+        <div class="col">&#36;<%= order.text_field :sales_tax,
+          :class => 'custom_text short right',
+          :readonly => 'true' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :subtotal, 'Subtotal' %></div>
+        <div class="col">&#36;<%= order.text_field :subtotal,
+          :class => 'custom_text short right',
+          :readonly => 'true' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :finishing, 'Finishing' %></div>
+        <div class="col">&#36;<%= order.text_field :finishing,
+          :id => 'order_finishing',
+          :class => 'custom_text short right',
+          :onchange => 'javascript: Order.update_total();' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :pickup_charge, 'Delivery Charge' %></div>
+        <div class="col">&#36;<%= order.text_field :delivery_charge,
+          :class => 'custom_text short right',
+          :onchange => 'javascript: Order.update_total();' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label 'Total' %></div>
+        <div class="col">&#36;<%= order.text_field :total,
+          :class => 'custom_text short right',
+          :readonly => 'true' %></div>
+      </div>
+    </div>
+    <div id="deposit" class="col payment" style="width:45%; display:none;">
+    <%= fields_for :deposit_ledger, @deposit_ledger do |deposit_ledger| %>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= deposit_ledger.label :payment_type, 'Deposit' %></div>
+        <div class="col">&#36;
+          <%= deposit_ledger.text_field :amount,
+            :id => 'deposit_amount',
+            :class => 'custom_text short right',
+            :onchange => 'javascript: Order.update_balance();' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= deposit_ledger.label :payment_method, 'Payment Method' %></div>
+        <div class="col">
+          <%= deposit_ledger.collection_select(:payment_method, 
+            @payment_method_list, 
+            :key, 
+            :option, 
+            { :prompt => 'select...' } ) %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:30%">
+          <%= deposit_ledger.label :payment_date, 'DATE' %></div>
+        <div class="col">
+          <% if nil != @deposit_ledger.payment_date %>
+          <%= @deposit_ledger.payment_date.strftime('%m/%d/%Y') %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    </div>
+    <div id="payment" class="col payment" style="width:45%; display:none;">
+    <%= fields_for :payment_ledger, @payment_ledger do |payment_ledger| %>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= payment_ledger.label :payment_type, 'Balance' %></div>
+        <div id="balance" class="col">&#36;
+          <%= payment_ledger.text_field :amount,
+            :id => 'order_balance',
+            :class => 'custom_text short right',
+            :readonly => 'true' %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= payment_ledger.label :payment_method, 'Payment Method' %></div>
+        <div class="col">
+          <%= payment_ledger.collection_select(:payment_method, 
+            @payment_method_list, 
+            :key, 
+            :option, 
+            { :prompt => 'select...' } ) %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:30%">
+          <%= payment_ledger.label :payment_date, 'DATE' %></div>
+        <div class="col">
+          <% if nil != @payment_ledger.payment_date %>
+          <%= @payment_ledger.payment_date.strftime('%m/%d/%Y') %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    </div>      
+  </div>
+  
+  <div class="row" style="padding-top:20px;">
+    <div class="col_r">
+      <%= button_tag "Submit",
+        :id => "submit_button",
+        :name => "submit_button",
+        :type => "button" 
+      %>
+    </div>
+  </div>
+  
+  <div class="row"></div>
+<% end %>
+  

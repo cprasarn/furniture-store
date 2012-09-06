@@ -1,0 +1,168 @@
+@import "bootstrap";
+
+/* mixins, variables, etc. */
+
+$grayMediumLight: #eaeaea;
+
+/* universal */
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  padding-top: 60px;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+  h1 {
+    margin-bottom: 10px;
+  }
+}
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 3em;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 1.7em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+  color: $grayLight;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+.right { text-align: right; }
+.left { float: left; }
+.bold { font-weight: bold; }
+
+.portlet {
+  font-size: 2em;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: $grayLight;
+  height: 1em;
+  border-bottom: 2px solid #ccc;
+}
+
+.sub_portlet {
+  font-size: 1.5em;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #999;
+  height: 1em;
+  border-bottom: 2px solid #ccc;
+}
+
+.sub_form {
+  margin: 5px 0 0 5px;
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+}
+
+.row {
+  clear: both;
+  padding:0px 10px;
+  &.header { padding-top:10px; border-bottom: 1px solid #ccc; }
+}
+
+.col {
+  float: left;
+  padding: 3px;
+  &.header { font-weight:bold; }
+  &.name { width:20%; }
+  &.info { width:30%; }
+}
+
+.col_r {
+  float: right;
+  padding: 3px;
+  &.header { font-weight:bold; }
+  &.error { width:20%; }
+}
+
+.link_action {
+  font-size: 1em;
+  color: #369;
+}
+
+.custom_text {
+  &.short { width: 60px; }
+  &.medium { width: 150px; }
+  &.long { width: 200px; }
+}
+
+.payment {
+  margin: 5px;
+  padding: 5px 20px;
+  border: 1px solid #ccc;
+}
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  line-height: 1;
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid $grayMediumLight;
+  color: $grayLight;
+  a {
+    color: $gray;
+    &:hover { 
+      color: $grayDarker;
+    }
+  }  
+  small { 
+    float: left; 
+  }
+  ul {
+    float: right;
+    list-style: none;
+    li {
+      float: left;
+      margin-left: 10px;
+    }
+  }
+}
