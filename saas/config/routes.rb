@@ -1,4 +1,6 @@
 Saas::Application.routes.draw do
+  resources :payment_types
+
   resources :user_roles
 
   get "static_pages/home"

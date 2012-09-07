@@ -4,8 +4,7 @@ class Address < ActiveRecord::Base
   self.table_name = 'address'
   self.primary_key = :id
   
-  attr_accessible :id, :street1, :street2, :city, :state, :zip_code,
-    :create_date, :modify_date, :status
+  attr_accessible :street1, :street2, :city, :state, :zip_code
 
   validates :street1, :presence => true
   validates :city, :presence => true
@@ -15,11 +14,13 @@ class Address < ActiveRecord::Base
   def initialize(attributes=nil, options={})
     super
     self.create_date = Time.new
+    self.status = Status::DORMANT
   end
   
   def save
     uuid = UUID.new
     self.id = uuid.generate
+    self.status = Status::ACTIVE
     super
   end    
 end

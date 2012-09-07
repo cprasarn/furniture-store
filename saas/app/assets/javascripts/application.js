@@ -14,6 +14,11 @@
 //= require jquery_ujs
 //= require_tree .
 
+$(function() {
+    $('.datepicker').datepicker();
+    $('.note').tooltip();
+});
+
 function toggle_display_mode(id)
 {
 	var display_mode = $('#' + id).css("display");

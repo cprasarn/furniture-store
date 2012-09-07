@@ -1,4 +1,11 @@
 module EstimatedCompletionTime
+  FOUR_WEEKS = 4
+  SIX_WEEKS = 6
+  SEVEN_WEEKS = 7
+  EIGHT_WEEKS = 8
+  TEN_WEEKS = 10
+  TWELVE_WEEKS = 12
+  
   class EstimatedTime
     def initialize(key, value)
       @key = key
@@ -15,14 +22,15 @@ module EstimatedCompletionTime
   end
       
   def table
-    four_weeks = EstimatedTime.new(4, '4 Weeks')
-    six_weeks = EstimatedTime.new(6, '6 Weeks')
-    seven_weeks = EstimatedTime.new(7, '7 Weeks')
-    eight_weeks = EstimatedTime.new(8, '8 Weeks')
-    ten_weeks = EstimatedTime.new(10, '10 Weeks')
-    twelve_weeks = EstimatedTime.new(12, '12 Weeks')
+    data = Array.new
+    
+    data << EstimatedTime.new(EstimatedCompletionTime::FOUR_WEEKS, '4 Weeks')
+    data << EstimatedTime.new(EstimatedCompletionTime::SIX_WEEKS, '6 Weeks')
+    data << EstimatedTime.new(EstimatedCompletionTime::SEVEN_WEEKS, '7 Weeks')
+    data << EstimatedTime.new(EstimatedCompletionTime::EIGHT_WEEKS, '8 Weeks')
+    data << EstimatedTime.new(EstimatedCompletionTime::TEN_WEEKS, '10 Weeks')
+    data << EstimatedTime.new(EstimatedCompletionTime::TWELVE_WEEKS, '12 Weeks')
      
-    data = [four_weeks, six_weeks, seven_weeks, eight_weeks, ten_weeks, twelve_weeks]
     return data
   end
     

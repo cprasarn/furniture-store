@@ -11,35 +11,53 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :id %><br />
-    <%= f.text_field :id %>
+  <%= f.hidden_field :id %>
+  <div class="row">
+    <div class="col name"><%= f.label :order_number %></div>
+    <div class="col"><%= f.text_field :order_number %></div>
   </div>
-  <div class="field">
-    <%= f.label :order_number %><br />
-    <%= f.text_field :order_number %>
+  <div class="row">
+    <div class="col name"><%= f.label :payment_type, 'Payment Type' %></div>
+    <div class="col">
+      <%= f.collection_select(:payment_type, 
+        @payment_type_list, 
+        :name, 
+        :description, 
+        { :prompt => 'select...' } ) %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :payment_type %><br />
-    <%= f.text_field :payment_type %>
+  <div class="row">
+    <div class="col name"><%= f.label :payment_method, 'Payment Method' %></div>
+    <div class="col">
+      <%= f.collection_select(:payment_method, 
+        @payment_method_list, 
+        :name, 
+        :description, 
+        { :prompt => 'select...' } ) %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :payment_method %><br />
-    <%= f.text_field :payment_method %>
+  <div class="row">
+    <div class="col name"><%= f.label :amount %></div>
+    <div class="col"><%= f.text_field :amount %></div>
   </div>
-  <div class="field">
-    <%= f.label :amount %><br />
-    <%= f.text_field :amount %>
+  <div class="row">
+    <div class="col name"><%= f.label :payment_date %></div>
+    <div class="col"><%= f.text_field :payment_date,
+      :class => 'datepicker',
+      :value => @ledger.payment_date.strftime('%m/%d/%Y') %></div>
   </div>
-  <div class="field">
-    <%= f.label :payment_date %><br />
-    <%= f.date_select :payment_date %>
+  <div class="row">
+    <div class="col name"><%= f.label :status %></div>
+    <div class="col">
+      <%= f.collection_select(:status, 
+        @status_list, 
+        :key, 
+        :option, 
+        { :prompt => 'select...' } ) %>
+    </div>
   </div>
-  <div class="field">
-    <%= f.label :status %><br />
-    <%= f.text_field :status %>
-  </div>
-  <div class="actions">
+  
+  <div class="row actions" style="padding-top:20px;">
     <%= f.submit %>
   </div>
 <% end %>

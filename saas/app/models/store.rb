@@ -10,7 +10,7 @@
 class Store < ActiveRecord::Base
   self.table_name = 'stores'
   
-  attr_accessible :name, :code, :store_number, :order_number, :image_directory,
+  attr_accessible :name, :code, :store_number, :order_number, 
     :street1, :street2, :city, :state, :zip_code, :phone, :fax
 
   def self.get_order_number(code, number)

@@ -1,7 +1,7 @@
 module PaymentMethods
-  CREDIT_CARD = 'Creadit Card'
-  CASH = 'Cash'
-  CHECK = 'Check'
+  CASH = 'CASH'
+  CHECK = 'CHECK'
+  CREDIT_CARD = 'CREDIT_CARD'
   
   class PaymentMethod
     def initialize(name, value)
@@ -9,21 +9,22 @@ module PaymentMethods
       @value = value
     end
     
-    def key
+    def name
       @name
     end
     
-    def option
+    def description
       @value
     end
   end
       
   def table
-    credit_card_option = PaymentMethod.new('CREDIT_CARD', 'Credit Card')
-    cash_option = PaymentMethod.new('CASH', 'Cash')
-    check_option = PaymentMethod.new('CHECK', 'Check')
+    data = Array.new
     
-    data = [credit_card_option, cash_option, check_option]
+    data << PaymentMethod.new(PaymentMethods::CASH, 'Cash')
+    data << PaymentMethod.new(PaymentMethods::CHECK, 'Check')
+    data << PaymentMethod.new(PaymentMethods::CREDIT_CARD, 'Credit Card')
+    
     return data
   end
     

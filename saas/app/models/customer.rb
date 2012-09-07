@@ -19,9 +19,7 @@ class Customer < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
   
-  attr_accessible :id, :name, 
-    :home_phone, :mobile_phone, :business_phone, :fax, :email, 
-    :create_date, :modify_date, :status
+  attr_accessible :name, :home_phone, :mobile_phone, :business_phone, :fax, :email
   
   has_many :orders
 
@@ -33,10 +31,12 @@ class Customer < ActiveRecord::Base
   def initialize(attributes=nil, options={})
     super
     self.create_date = Time.new
+    self.status = Status::DORMANT
   end
   
   def save
     self.modify_date = Time.new
+    self.status = Status::ACTIVE
     super
   end
 end

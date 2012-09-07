@@ -18,23 +18,26 @@ require 'uuid'
 class Item < ActiveRecord::Base
   self.table_name = 'items'
   self.per_page = 5
+  IMAGE_PATH = 'app/assets/images'
   
-  attr_accessible :id, :order_number, :item_number, 
+  attr_accessible :order_number, :item_number, 
     :quantity, :wood, :finish, :description, :image_uri,  
-    :price, :finishing_cost, :create_date, :status
+    :price, :finishing_cost
   
   belongs_to :order, :foreign_key => 'order_number', :primary_key => 'order_number'
   
-  attr_accessor :name
+  attr_accessor :name, :image_file
 
   validates :order_number, :presence => true
   validates :item_number, :presence => true
   validates :quantity, :presence => true
   validates :description, :presence => true  
+  validates :image_uri, :presence => true
   
   def initialize(attributes=nil, options={})
     super
     self.create_date = Time.new
+    self.status = Status::DORMANT
   end
   
   def save
@@ -45,6 +48,16 @@ class Item < ActiveRecord::Base
   
   def item_name
     order_number + '_' + sprintf('%04d', item_number)
+  end
+  
+  def save_image_file(temp_image_file)
+    image_directory = Rails.root + Item::IMAGE_PATH
+    if !File.directory?(image_directory)
+      # Create the image directory
+    end
+    
+    image_file = image_directory + '/' + image_uri
+    File.rename(temp_image_file, image_file)
   end
   
   def self.next_item_number(order_number)

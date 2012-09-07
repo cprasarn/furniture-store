@@ -26,7 +26,10 @@ class LedgersController < ApplicationController
   # GET /ledgers/new.json
   def new
     @ledger = Ledger.new
-
+    @payment_type_list = PaymentType.all
+    @payment_method_list = PaymentMethods.table
+    @status_list = Status.table
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @ledger }

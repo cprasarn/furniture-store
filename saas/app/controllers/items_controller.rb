@@ -94,9 +94,10 @@ class ItemsController < ApplicationController
   # POST /items.json
   def create
     # Item image file
+    temp_image_file = nil
     item_file_fields = params[:item][:image_file]
     if item_file_fields
-      image_file = item_file_fields.tempfile
+      temp_image_file = item_file_fields.tempfile
       params[:item][:image_file] = nil
     end
     
@@ -185,20 +186,22 @@ class ItemsController < ApplicationController
         end
       end
       
-      if !@order.errors.any?
+      if ! (@order.errors.any? or @customer.errors.any? or @address.errors.any?) then
         @item.item_number = Item.next_item_number(@item.order_number)
         @item.image_uri = 'items/' + @item.item_name + '.png'
+        if temp_image_file
+          # Move the temporary file to local repository
+          @item.save_image_file(temp_image_file)
+        end
          
-        if !( @item.order_number.nil? or @item.image_uri.nil? ) then
-          if @item.save
-            # Successfully persisted to the database
-            @order = @item.order
-            format.json { render json: @item }
-            format.html { redirect_to @order }
-          else
-            format.html { render action: "new" }
-            format.json { render json: @item.errors, status: :unprocessable_entity }
-          end
+        if @item.save
+          # Successfully persisted to the database
+          @order = @item.order
+          format.json { render json: @item }
+          format.html { redirect_to @order }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @item.errors, status: :unprocessable_entity }
         end
       else
         # Display error message
@@ -206,6 +209,7 @@ class ItemsController < ApplicationController
         format.json { render json: @item.errors, status: :unprocessable_entity }
         format.json { render json: @order.errors, status: :unprocessable_entity }
         format.json { render json: @customer.errors, status: :unprocessable_entity }
+        format.json { render json: @address.errors, status: :unprocessable_entity }
       end
     end
   end

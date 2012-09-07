@@ -19,11 +19,12 @@ module DeliveryOptions
   end
       
   def table
-    delivery_option = DeliveryOption.new('DELIVERY', 'Delivery')
-    evanston_option = DeliveryOption.new('EVANSTON', 'Evanston Pickup')
-    cermak_option = DeliveryOption.new('CERMAK', 'Cermak Pickup')
+    data = Array.new
     
-    data = [delivery_option, evanston_option, cermak_option]
+    data << DeliveryOption.new('DELIVERY', 'Delivery')
+    data << DeliveryOption.new('EVANSTON', 'Evanston Pickup')
+    data << DeliveryOption.new('CERMAK', 'Cermak Pickup')
+    
     return data
   end
     

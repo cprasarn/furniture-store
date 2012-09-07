@@ -30,10 +30,10 @@ class Order < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
     
-  attr_accessible :id, :order_number, :customer_id, :address_id, :lead_source, 
+  attr_accessible :order_number, :customer_id, :address_id, :lead_source, 
     :price, :discount, :sales_tax, :finishing, 
     :delivery_option, :delivery_charge, 
-    :order_date, :estimated_time, :delivery_date, :status
+    :order_date, :estimated_time, :delivery_date
    
   attr_accessor :branch, :subtotal, :total, :balance
   
@@ -52,6 +52,7 @@ class Order < ActiveRecord::Base
     super
     self.order_date = Time.new
     self.branch = 'HALSTED'
+    self.status = Status::DORMANT
   end
   
   def save

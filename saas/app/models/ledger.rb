@@ -6,7 +6,7 @@ class Ledger < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
     
-  attr_accessible :id, :order_number, :payment_method, :payment_type, :amount, :payment_date, :status
+  attr_accessible :order_number, :payment_method, :payment_type, :amount
   
   belongs_to :order, :foreign_key => 'order_number', :primary_key => 'order_number'
   
@@ -19,13 +19,13 @@ class Ledger < ActiveRecord::Base
   
   def initialize(attributes=nil, options={})
     super
-    self.amount = 0
+    self.payment_date = Time.new
+    self.status = Status::DORMANT
   end
   
   def save
     uuid = UUID.new
     self.id = uuid.generate
-    self.payment_date = Time.new
     super
   end  
 end

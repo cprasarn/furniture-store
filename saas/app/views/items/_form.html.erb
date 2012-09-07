@@ -24,7 +24,7 @@
       </div>
       <div class="row">
         <div class="col name" style="width:30%"><%= order.label :order_number, 'ORDER#' %></div>
-        <div class="col">
+        <div class="col note" title="If this is a new order, leave 'NEW ORDER' intact">
           <%= order.text_field :order_number,
             :id => 'order_number' %>
         </div>
@@ -218,8 +218,18 @@
       </div>
     <% end %>
     </div>
-    <div id="ledgers" class="col payment" style="width:45%;display:none;">
-      <div class="row bold">Order Payment</div>
+    <% if @ledgers %>
+    <div id="ledgers" class="col payment" style="width:45%">
+      <div class="row bold">
+        <div class="col">Order Payment</div>
+        <div class="col right">
+          <%= button_tag "New Payment",
+            :id => "new_payment_button",
+            :name => "new_payment_button",
+            :type => "button" 
+          %>
+        </div>
+      </div>
       <div class="row header">
         <div class="col header" style="width:20%">DATE</div>
         <div class="col header" style="width:20%">TYPE</div>
@@ -227,7 +237,7 @@
         <div class="col header" style="width:20%">AMOUNT</div>
         <div class="col header" style="width:10%">ACTION</div>
       </div>
-      <% if @ledgers %><% @ledgers.each do |ledger| %>
+      <% @ledgers.each do |ledger| %>
       <div class="row">
         <div class="col" style="width:20%"><%= ledger.payment_date.strftime('%m/%d/%Y') %></div>
         <div class="col" style="width:20%"><%= ledger.payment_type %></div>
@@ -237,8 +247,9 @@
           <%= link_to "Show", ledger %>
         </div>
       </div>
-      <% end %><% end %>
-    </div>      
+      <% end %>
+    </div>
+    <% end %>      
   </div>
   
   <div class="row" style="padding-top:20px;">
@@ -246,7 +257,7 @@
       <%= button_tag "Submit",
         :id => "submit_button",
         :name => "submit_button",
-        :type => "button" 
+        :type => "submit" 
       %>
     </div>
   </div>

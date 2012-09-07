@@ -4,7 +4,7 @@ class CustomersAddress < ActiveRecord::Base
   self.table_name = 'customers_address'
   self.primary_key = :id
   
-  attr_accessible :id, :address_id, :customer_id, :is_primary, :create_date, :modify_date, :status
+  attr_accessible :customer_id, :address_id, :is_primary
   
   belongs_to :customer
   has_one :address, :primary_key => 'address_id', :foreign_key => 'id'
@@ -18,6 +18,7 @@ class CustomersAddress < ActiveRecord::Base
     
     self.create_date = Time.new if self.create_date.nil?
     self.modify_date = Time.new
+    self.status = Status::ACTIVE
     super
   end
   
