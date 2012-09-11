@@ -55,9 +55,11 @@ p {
   line-height: 1.7em;
 }
 
-.right { text-align: right; }
+.right { float: right; }
 .left { float: left; }
 .bold { font-weight: bold; }
+.right_text { text-align: right; }
+.right_vertical { vertical-align: right; }
 
 .portlet {
   font-size: 2em;

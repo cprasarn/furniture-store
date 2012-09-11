@@ -1,0 +1,15 @@
+<% if @items %>
+  <% @items.each_with_index do |item, i| %>
+    <%= fields_for @items[i], @item do |item| %>
+      <div class="row">
+        <div class="col" style="width:5%"><%= @items[i].quantity %></div>
+        <div class="col" style="width:20%"><%= @items[i].wood %></div>
+        <div class="col" style="width:25%"><%= @items[i].finish %></div>
+        <div class="col" style="width:25%"><%= @items[i].description %></div>
+        <div class="col" style="width:20%">
+          <%= image_tag @items[i].image_uri %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

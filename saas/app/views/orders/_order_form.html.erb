@@ -1,0 +1,42 @@
+    <%= fields_for :order, @order do |order| %>
+    <%= order.hidden_field :id, :value => @order.id %>
+    <div class="col" style="width:40%">
+      <div class="row">
+        <div class="col name" style="width:30%"><%= order.label :order_date, 'DATE' %></div>
+        <div class="col"><%= order.text_field :order_date, 
+          :id => 'order_date',
+          :value => @order.order_date.strftime('%m/%d/%Y'),
+          :readonly => 'true' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:30%"><%= order.label :order_number, 'ORDER#' %></div>
+        <div class="col note" title="If this is a new order, leave 'NEW ORDER' intact">
+          <%= order.text_field :order_number,
+            :id => 'order_number' %>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+    <div class="col" style="width:50%">
+      <div class="row">
+        <div class="col" style="width:45%"><%= order.label :estimated_time, 'Estimated Completion Time' %></div>
+        <div class="col" style="width:45%">
+          <%= order.collection_select(:estimated_time, 
+            @estimated_time_list, 
+            :key, 
+            :option, 
+            { :prompt => 'select...' } ) %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= order.label :delivery_option, 'DELIVERY OPTION' %></div>
+        <div class="col" style="width:45%">
+          <%= order.collection_select(:delivery_option, 
+            @delivery_option_list, 
+            :key, 
+            :option, 
+            { :prompt => 'select...' } ) %>
+        </div>
+      </div>
+    </div>
+    <% end %>

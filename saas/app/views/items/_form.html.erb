@@ -45,243 +45,27 @@
   <% end %>
   <!-- Order Detail -->
   <div id="order_detail" class="row">
-    <%= fields_for :order, @order do |order| %>
-    <%= order.hidden_field :id, :value => @order.id %>
-    <div class="col" style="width:40%">
-      <div class="row">
-        <div class="col name" style="width:30%"><%= order.label :order_date, 'DATE' %></div>
-        <div class="col"><%= order.text_field :order_date, 
-          :id => 'order_date',
-          :value => @order.order_date.strftime('%m/%d/%Y'),
-          :readonly => 'true' %></div>
-      </div>
-      <div class="row">
-        <div class="col name" style="width:30%"><%= order.label :order_number, 'ORDER#' %></div>
-        <div class="col note" title="If this is a new order, leave 'NEW ORDER' intact">
-          <%= order.text_field :order_number,
-            :id => 'order_number' %>
-        </div>
-      </div>
-    </div>
-    <div class="col"></div>
-    <div class="col" style="width:50%">
-      <div class="row">
-        <div class="col" style="width:45%"><%= order.label :estimated_time, 'Estimated Completion Time' %></div>
-        <div class="col" style="width:45%">
-          <%= order.collection_select(:estimated_time, 
-            @estimated_time_list, 
-            :key, 
-            :option, 
-            { :prompt => 'select...' } ) %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col" style="width:45%"><%= order.label :delivery_option, 'DELIVERY OPTION' %></div>
-        <div class="col" style="width:45%">
-          <%= order.collection_select(:delivery_option, 
-            @delivery_option_list, 
-            :key, 
-            :option, 
-            { :prompt => 'select...' } ) %>
-        </div>
-      </div>
-    </div>
-    <% end %>
+    <%= render 'orders/order_form' %>
   </div>
 
   <!-- Customer Detail -->
   <div id="customer_detail" class="row">
-    <%= fields_for :customer, @customer do |customer| %>
-    <%= customer.hidden_field :id, :value => @customer.id %>
-    <div class="col" style="width:40%">
-      <div class="row">
-        <div class="col name" style="width:30%"><%= customer.label :name, 'NAME' %></div>
-        <div class="col"><%= customer.text_field :name,
-          :id => 'customer_name' %></div>
-      </div>
-      <%= fields_for :address, @address do |address| %>
-      <%= address.hidden_field :id, :value => @address.id %>
-      <div class="row">
-        <div class="col name" style="width:30%"><%= address.label :street1, 'ADDRESS' %></div>
-        <div class="col">
-          <%= address.text_field :street1,
-            :value => (@address.is_empty(@address.street1) ? 'street 1' : @address.street1) %><br />
-          <%= address.text_field :street2,
-            :value => (@address.is_empty(@address.street2) ? (@address.is_empty(@address.street1) ? 'street2' : '') : @address.street2) %><br />
-          <%= address.text_field :city,
-            :value => (@address.is_empty(@address.city) ? (@address.is_empty(@address.street1) ? 'city' : '') : @address.city) %><br />
-          <%= address.collection_select(:state, 
-            @state_list, 
-            :abbreviation, 
-            :abbreviation, 
-            { :prompt => 'state...' } ) %><br />
-          <%= address.text_field :zip_code,
-            :value => (@address.is_empty(@address.zip_code) ? (@address.is_empty(@address.street1) ? 'zip code' : '') : @address.zip_code) %>
-        </div>
-      </div>
-      <% end %>
-    </div>
-    <div class="col"></div>
-    <div class="col" style="width:50%">
-      <div class="row">
-        <div class="col" style="width:45%"><%= customer.label :home_phone, 'PHONE' %></div>
-        <div class="col" style="width:45%">
-          <%= customer.telephone_field :home_phone,
-            :id => 'home_phone' %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col" style="width:45%"><%= customer.label :mobile_phone, 'MOBILE' %></div>
-        <div class="col" style="width:45%">
-          <%= customer.telephone_field :mobile_phone,
-            :id => 'mobile_phone' %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col" style="width:45%"><%= customer.label :business_phone, 'WORK' %></div>
-        <div class="col" style="width:45%">
-          <%= customer.telephone_field :business_phone,
-            :id => 'business_phone' %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col" style="width:45%"><%= customer.label :fax, 'FAX' %></div>
-        <div class="col" style="width:45%">
-          <%= customer.telephone_field :fax,
-            :id => 'fax' %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col" style="width:45%"><%= customer.label :email, 'EMAIL' %></div>
-        <div class="col" style="width:45%">
-          <%= customer.email_field :email,
-            :id => 'email' %>
-        </div>
-      </div>
-    </div>
-    <% end %>
+    <%= render 'customers/order_form' %>
   </div>
   
   <!-- Item -->
   <div id="items">
-    <div class="row header">
-      <div class="col header" style="width:10%">QTY</div>
-      <div class="col header" style="width:20%">WOOD</div>
-      <div class="col header" style="width:25%">FINISH</div>
-      <div class="col header" style="width:25%">DESCRIPTION (h x w x d)</div>
-      <div class="col header" style="width:10%">PICTURE</div>
-    </div>
-    <div id="items_list">
-    <% if @items %><% @items.each do |item| %>
-    <div class="row">
-      <div class="col" style="width:10%"><%= item.quantity %></div>
-      <div class="col" style="width:20%"><%= item.wood %></div>
-      <div class="col" style="width:25%"><%= item.finish %></div>
-      <div class="col" style="width:25%"><%= item.description %></div>
-      <div class="col" style="width:10%">
-        <%= image_tag item.image_uri %>
-      </div>
-    </div>    
-    <% end %><% end %>
-    </div>
-    <div class="row">
-      <div class="col" style="width:5%"><%= f.text_field :quantity,
-        :class => 'custom_text small right',
-        :size => '5',  
-        :maxlength => '5' %></div>
-      <div class="col" style="width:20%"><%= f.text_area :wood,
-        :class => 'custom_text medium',
-        :rows => '2' %></div>
-      <div class="col" style="width:25%"><%= f.text_area :finish,
-        :rows => '2' %></div>
-      <div class="col" style="width:25%"><%= f.text_area :description,
-        :rows => '2' %></div>
-      <% if nil == @sketchup %>
-      <div class="col" style="width:20%"><%= file_field_tag :image_file %></div>
-      <% end %>
-    </div>
+    <%= render 'items/order_form' %>
   </div>
   
   <!-- Order Payment -->
   <div id="order_ledger" class="row" style="padding-top:40px;">
     <div id="order_charge" class="col payment" style="width:40%">
-    <%= fields_for :order, @order do |order| %>
-      <div class="row">
-        <div class="col name" style="width:150px">
-          <%= order.label :price, 'Price w/o finish' %></div>
-        <div class="col">&#36;<%= order.text_field :price,
-          :class => 'custom_text short right',
-          :onchange => 'Order.update_tax_and_subtotal();' %></div>
-      </div>
-      <div class="row">
-        <div class="col name" style="width:150px">
-          <%= order.label :sales_tax, 'Tax' %></div>
-        <div class="col">&#36;<%= order.text_field :sales_tax,
-          :class => 'custom_text short right' %></div>
-      </div>
-      <div class="row">
-        <div class="col name" style="width:150px">
-          <%= order.label :subtotal, 'Subtotal' %></div>
-        <div class="col">&#36;<%= text_field_tag :order_subtotal, @order.subtotal,
-          :class => 'custom_text short right',
-          :onchange => 'javascript: Order.adjust_subtotal();' %></div>
-      </div>
-      <div class="row">
-        <div class="col name" style="width:150px">
-          <%= order.label :finishing, 'Finishing' %></div>
-        <div class="col">&#36;<%= order.text_field :finishing,
-          :id => 'order_finishing',
-          :class => 'custom_text short right',
-          :onchange => 'javascript: Order.update_total();' %></div>
-      </div>
-      <div class="row">
-        <div class="col name" style="width:150px">
-          <%= order.label :pickup_charge, 'Delivery Charge' %></div>
-        <div class="col">&#36;<%= order.text_field :delivery_charge,
-          :class => 'custom_text short right',
-          :onchange => 'javascript: Order.update_total();' %></div>
-      </div>
-      <div class="row">
-        <div class="col name" style="width:150px">
-          <%= order.label 'Total' %></div>
-        <div class="col">&#36;<%= text_field_tag :order_total, @order.total,
-          :class => 'custom_text short right',
-          :onchange => 'javascript: Order.adjust_total();' %></div>
-      </div>
-    <% end %>
+      <%= render 'orders/price_form' %>
     </div>
-    <% if @ledgers %>
-    <div id="ledgers" class="col payment" style="width:45%">
-      <div class="row bold">
-        <div class="col">Order Payment</div>
-        <div class="col right">
-          <%= button_tag "New Payment",
-            :id => "new_payment_button",
-            :name => "new_payment_button",
-            :type => "button" 
-          %>
-        </div>
-      </div>
-      <div class="row header">
-        <div class="col header" style="width:20%">DATE</div>
-        <div class="col header" style="width:20%">TYPE</div>
-        <div class="col header" style="width:20%">METHOD</div>
-        <div class="col header" style="width:20%">AMOUNT</div>
-        <div class="col header" style="width:10%">ACTION</div>
-      </div>
-      <% @ledgers.each do |ledger| %>
-      <div class="row">
-        <div class="col" style="width:20%"><%= ledger.payment_date.strftime('%m/%d/%Y') %></div>
-        <div class="col" style="width:20%"><%= ledger.payment_type %></div>
-        <div class="col" style="width:20%"><%= ledger.payment_method %></div>
-        <div class="col" style="width:20%"><%= ledger.amount %></div>
-        <div class="col" style="width:10%">
-          <%= link_to "Show", ledger %>
-        </div>
-      </div>
-      <% end %>
+    <div id="ledgers" class="col payment" style="width:45%; <%= "display:none;" if @ledgers.nil? %>">
+      <%= render 'ledgers/order_form' %>
     </div>
-    <% end %>      
   </div>
   
   <div class="row" style="padding-top:20px;">

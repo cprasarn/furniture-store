@@ -1,0 +1,44 @@
+    <%= fields_for :order, @order do |order| %>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :price, 'Price w/o finish' %></div>
+        <div class="col">&#36;<%= order.text_field :price,
+          :class => 'custom_text short right_text',
+          :onchange => 'Order.update_tax_and_subtotal();' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :sales_tax, 'Tax' %></div>
+        <div class="col">&#36;<%= order.text_field :sales_tax,
+          :class => 'custom_text short right_text' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :subtotal, 'Subtotal' %></div>
+        <div class="col">&#36;<%= text_field_tag :order_subtotal, @order.subtotal,
+          :class => 'custom_text short right_text',
+          :onchange => 'Order.adjust_subtotal();' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :finishing, 'Finishing' %></div>
+        <div class="col">&#36;<%= order.text_field :finishing,
+          :id => 'order_finishing',
+          :class => 'custom_text short right_text',
+          :onchange => 'Order.update_total();' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label :pickup_charge, 'Delivery Charge' %></div>
+        <div class="col">&#36;<%= order.text_field :delivery_charge,
+          :class => 'custom_text short right_text',
+          :onchange => 'Order.update_total();' %></div>
+      </div>
+      <div class="row">
+        <div class="col name" style="width:150px">
+          <%= order.label 'Total' %></div>
+        <div class="col">&#36;<%= text_field_tag :order_total, @order.total,
+          :class => 'custom_text short right_text',
+          :onchange => 'Order.adjust_total();' %></div>
+      </div>
+    <% end %>

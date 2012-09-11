@@ -1,0 +1,24 @@
+<% if @items %>
+  <% @items.each_with_index do |item, i| %>
+    <%= fields_for @items[i], @item do |item| %>
+      <div class="row">
+        <div class="col" style="width:5%"><%= item.text_field :quantity,
+          :index => i,
+          :class => 'custom_text small right_text right_vertical' %></div>
+        <div class="col" style="width:20%"><%= item.text_area :wood,
+          :index => i,
+          :class => 'custom_text medium',
+          :rows => '2' %></div>
+        <div class="col" style="width:25%"><%= item.text_area :finish,
+          :index => i,
+          :rows => '2' %></div>
+        <div class="col" style="width:25%"><%= item.text_area :description,
+          :index => i,
+          :rows => '2' %></div>
+        <div class="col" style="width:20%">
+          <%= image_tag @items[i].image_uri %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

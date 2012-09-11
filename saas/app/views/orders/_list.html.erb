@@ -1,0 +1,4 @@
+<h1>New Order</h1>
+<%= fields_for(@order) do |order| %>
+<%= render 'orders/form', :f => order %>
+<% end %>

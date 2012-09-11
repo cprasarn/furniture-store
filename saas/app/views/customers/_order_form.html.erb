@@ -1,0 +1,44 @@
+    <%= fields_for :customer, @customer do |customer| %>
+    <%= customer.hidden_field :id, :value => @customer.id %>
+    <div class="col" style="width:40%">
+      <div class="row">
+        <div class="col name" style="width:30%"><%= customer.label :name, 'NAME' %></div>
+        <div class="col"><%= customer.text_field :name,
+          :id => 'customer_name' %></div>
+      </div>
+      <%= render 'addresses/order_form' %>
+    </div>
+    <div class="col"></div>
+    <div class="col" style="width:50%">
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :home_phone, 'PHONE' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.telephone_field :home_phone %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :mobile_phone, 'MOBILE' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.telephone_field :mobile_phone %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :business_phone, 'WORK' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.telephone_field :business_phone %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :fax, 'FAX' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.telephone_field :fax %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="width:45%"><%= customer.label :email, 'EMAIL' %></div>
+        <div class="col" style="width:45%">
+          <%= customer.email_field :email %>
+        </div>
+      </div>
+    </div>
+    <% end %>
