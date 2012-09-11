@@ -56,8 +56,8 @@ class Item < ActiveRecord::Base
       # Create the image directory
     end
     
-    image_file = image_directory + '/' + image_uri
-    File.rename(temp_image_file, image_file)
+    image_file = image_directory.to_s() + '/' + image_uri
+    FileUtils.copy temp_image_file, image_file
   end
   
   def self.next_item_number(order_number)

@@ -46,6 +46,7 @@
   <!-- Order Detail -->
   <div id="order_detail" class="row">
     <%= fields_for :order, @order do |order| %>
+    <%= order.hidden_field :id, :value => @order.id %>
     <div class="col" style="width:40%">
       <div class="row">
         <div class="col name" style="width:30%"><%= order.label :order_date, 'DATE' %></div>
@@ -245,8 +246,7 @@
         <div class="col name" style="width:150px">
           <%= order.label 'Total' %></div>
         <div class="col">&#36;<%= text_field_tag :order_total, @order.total,
-          :class => 'custom_text short right',
-          :readonly => 'true' %></div>
+          :class => 'custom_text short right' %></div>
       </div>
     <% end %>
     </div>

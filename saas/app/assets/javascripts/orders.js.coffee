@@ -79,6 +79,7 @@ Order.get_order_detail = (id) ->
     success: (data) ->
       order_date = undefined
       order_date = new Date(data.order_date)
+      $("#order_id").val data.id
       $("#order_date").val order_date.toString("MM/dd/yyyy")
       $("#order_price").val data.price
       $("#order_sales_tax").val data.sales_tax

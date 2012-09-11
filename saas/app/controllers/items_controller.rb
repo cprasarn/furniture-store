@@ -1,3 +1,4 @@
+require 'Status.rb'
 
 class ItemsController < ApplicationController
   respond_to :html, :json, :js
@@ -206,8 +207,13 @@ class ItemsController < ApplicationController
           logger.debug '[order] ' + @order.attributes.to_s
           if @order.id
             existing_order = Order.find(@order.id)
-            if @order != original_order
-              @order.save  
+            if !(original_order.identical? @order)
+              # Save order history
+              @order.id = nil
+              @order.save
+              
+              original_order.status = Status::INACTIVE
+              original_order.save
             end
           else 
             @order.save     

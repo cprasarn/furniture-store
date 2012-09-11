@@ -43,6 +43,15 @@ class Order < ActiveRecord::Base
   has_many :ledgers, :primary_key => 'order_number', :foreign_key => 'order_number'
   
   validates_presence_of :order_number, :customer_id, :address_id, :price
+
+  def self.attributes_to_ignore_when_comparing
+    [:id, :order_date, :status]
+  end
+  
+  def identical?(other)
+    self. attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) ==
+    other.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+  end
   
   def initialize(attributes=nil, options={})
     super
