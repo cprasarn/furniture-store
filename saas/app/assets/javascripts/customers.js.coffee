@@ -6,7 +6,8 @@ $(document).ready ->
   $('#customer_name').change ->
     value = $('#customer_name').val()
     if '' == value
-      $('#customer_id').val('')
+      Customer.clear_info()
+      Address.clear_info()
 
   ## Customer Autocomplete
   $('#customer_name').autocomplete
@@ -25,18 +26,14 @@ $(document).ready ->
       $('#customer_name').val(ui.item.label)
       
       # Customer detail
-      Customer.clear_customer_detail()
+      Customer.clear_info
       customer = ui.item.data
       if undefined != customer
-        $('#customer_id').val(customer.id)
-        $('#home_phone').val(customer.home_phone)
-        $('#mobile_phone').val(customer.mobile_phone)
-        $('#business_phone').val(customer.business_phone)
-        $('#email').val(customer.email)
+        Customer.fill_info customer
       
       # Default address
-      Address.clear_address_detail()
-      Address.get_default_address_detail(customer.id)
+      Address.clear_info()
+      Address.default_info(customer.id)
         
       return
 
@@ -44,7 +41,7 @@ $(document).ready ->
   
 # Customer object
 @Customer = ->
-Customer.clear_customer_detail = ->
+Customer.clear_info = ->
   $("#customer_id").val ""
   $("#customer_name").val ""
   $("#home_phone").val ""
@@ -52,17 +49,21 @@ Customer.clear_customer_detail = ->
   $("#business_phone").val ""
   $("#email").val ""
 
-Customer.get_customer_detail = (id) ->
+Customer.fill_info = (data) ->
+  $("#customer_id").val data.id
+  $("#customer_name").val data.name
+  $("#home_phone").val data.home_phone
+  $("#mobile_phone").val data.mobile_phone
+  $("#business_phone").val data.business_phone
+  $("#email").val data.email
+  return
+
+Customer.info = (id) ->
   $.ajax
     url: "/customers/" + id
     dataType: "json"
     success: (customer) ->
-      $("#customer_name").val customer.name
-      $("#home_phone").val customer.home_phone
-      $("#mobile_phone").val customer.mobile_phone
-      $("#business_phone").val customer.business_phone
-      $("#email").val customer.email
-
+      Customer.fill_info customer
     error: (xhr, options, err) ->
       alert "Customer Detail[" + xhr.status + "] " + err
   

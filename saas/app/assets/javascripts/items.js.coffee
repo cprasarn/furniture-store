@@ -41,7 +41,7 @@ $(document).ready ->
 
 # Item object
 @Item = ->
-Item.get_items_by_order = (order_number) ->
+Item.items_by_order = (order_number) ->
     $.ajax
       url: '/items/list'
       dataType: 'html'

@@ -2,15 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(document).ready ->
+  toggle_input_value 'order_number', 'NEW ORDER'
+  
   ## Order Number
   $('#order_number').change ->
     value = $('#order_number').val()
     if '' == value
-      Order.clear_order_detail()
-      Customer.clear_customer_detail()
-      Address.clear_address_detail()
-  
-  toggle_input_value 'order_number', 'NEW ORDER'
+      Order.clear_info()
+      Customer.clear_info()
+      Address.clear_info()
   
   ## Order Autocomplete  
   $('#order_number').autocomplete
@@ -32,18 +32,18 @@ $(document).ready ->
       
       # Order detail
       order = ui.item.data
-      Order.fill_order_detail order
+      Order.fill_info order
       
       # Customer detail
       $('#customer_id').val(order.customer_id)
-      Customer.get_customer_detail order.customer_id
+      Customer.info order.customer_id
       
       # Address detail
       $('#address_id').val(order.address_id)
-      Address.get_address_detail order.address_id 
+      Address.info order.address_id 
       
       # Items
-      Item.get_items_by_order order.order_number
+      Item.items_by_order order.order_number
       
       return            
 
@@ -51,7 +51,7 @@ $(document).ready ->
 
 # Order Object  
 @Order = ->
-Order.clear_order_detail = ->
+Order.clear_info = ->
   today = undefined
   today = new Date()
   $("#order_date").val today.toString("MM/dd/yyyy")
@@ -64,7 +64,7 @@ Order.clear_order_detail = ->
   $("#order_total").val ""
   return
 
-Order.fill_order_detail = (data) ->
+Order.fill_info = (data) ->
   order_date = undefined
   order_date = new Date(data.order_date)
   $("#order_id").val data.id
@@ -73,16 +73,17 @@ Order.fill_order_detail = (data) ->
   $("#order_delivery_option").val data.delivery_option
   $("#order_price").val data.price
   $("#order_sales_tax").val data.sales_tax
-  subtotal = data.price + data.sales_tax
-  $("#order_subtotal").val subtotal
   $('#order_finishing').val data.finishing
   $('#order_delivery_charge').val data.delivery_charge
+  
+  subtotal = data.price + data.sales_tax
+  $("#order_subtotal").val subtotal
   
   total = subtotal + data.finishing + data.delivery_charge
   $("#order_total").val total
   return
 
-Order.get_order_detail = (id) ->
+Order.info = (id) ->
   $.ajax
     url: "/orders/search"
     dataType: "json"

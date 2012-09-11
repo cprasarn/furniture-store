@@ -9,7 +9,7 @@ $(document).ready ->
   return
 
 @Address = ->
-Address.clear_address_detail = ->
+Address.clear_info = ->
   $("#address_id").val ""
   $("#address_street1").val "street1"
   $("#address_street2").val "street2"
@@ -17,23 +17,26 @@ Address.clear_address_detail = ->
   $("#address_state").val "IL"
   $("#address_zip_code").val "zip code"
 
-Address.get_address_detail = (id) ->
+Address.fill_info = (data) ->
+  $("#address_id").val data.id
+  $("#address_street1").val data.street1
+  $("#address_street2").val data.street2
+  $("#address_city").val data.city
+  $("#address_state").val data.state
+  $("#address_zip_code").val data.zip_code
+  return
+  
+Address.info = (id) ->
   $.ajax
     url: "/addresses/" + id
     dataType: "json"
     success: (data) ->
-      $("#address_id").val data.id
-      $("#address_street1").val data.street1
-      $("#address_street2").val data.street2
-      $("#address_city").val data.city
-      $("#address_state").val data.state
-      $("#address_zip_code").val data.zip_code
-
+      Address.fill_info data
     error: (xhr, options, err) ->
       alert "Address Detail[" + xhr.status + "] " + err
 
 
-Address.get_default_address_detail = (customer_id) ->
+Address.default_info = (customer_id) ->
   $.ajax
     url: "/customers_addresses/search"
     dataType: "json"
@@ -43,7 +46,7 @@ Address.get_default_address_detail = (customer_id) ->
     success: (list) ->
       if list.length
         first = list.shift()
-        data = Address.get_address_detail(first.name)
+        data = Address.info(first.name)
         
     error: (xhr, options, err) ->
       alert "Default Address[" + xhr.status + "] " + err
