@@ -1,4 +1,6 @@
 Saas::Application.routes.draw do
+  resources :notes
+
   resources :payment_types
 
   resources :user_roles
