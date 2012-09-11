@@ -44,18 +44,18 @@ $(document).ready ->
 Customer.clear_info = ->
   $("#customer_id").val ""
   $("#customer_name").val ""
-  $("#home_phone").val ""
-  $("#mobile_phone").val ""
-  $("#business_phone").val ""
-  $("#email").val ""
+  $("#customer_home_phone").val ""
+  $("#customer_mobile_phone").val ""
+  $("#customer_business_phone").val ""
+  $("#customer_email").val ""
 
 Customer.fill_info = (data) ->
   $("#customer_id").val data.id
   $("#customer_name").val data.name
-  $("#home_phone").val data.home_phone
-  $("#mobile_phone").val data.mobile_phone
-  $("#business_phone").val data.business_phone
-  $("#email").val data.email
+  $("#customer_home_phone").val data.home_phone
+  $("#customer_mobile_phone").val data.mobile_phone
+  $("#customer_business_phone").val data.business_phone
+  $("#customer_email").val data.email
   return
 
 Customer.info = (id) ->
