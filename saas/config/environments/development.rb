@@ -37,4 +37,8 @@ Saas::Application.configure do
   
   # Security
   # config.force_ssl = true
+  
+  # Logger
+  # config.logger = Log4r::Logger.new("furniture-store")
+
 end
