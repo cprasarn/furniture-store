@@ -30,13 +30,11 @@ class Order < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
     
-  attr_accessible :order_number, :customer_id, :address_id, :lead_source, 
+  attr_accessible :branch, :order_number, :customer_id, :address_id, :lead_source, 
     :price, :discount, :sales_tax, :finishing, 
     :delivery_option, :delivery_charge, 
     :order_date, :estimated_time, :delivery_date
    
-  attr_accessor :branch, :subtotal, :total, :balance
-  
   belongs_to :customer, :primary_key => 'id', :foreign_key => 'customer_id'
   has_one :address, :primary_key => 'id', :foreign_key => 'address_id'
   has_many :items, :primary_key => 'order_number', :foreign_key => 'order_number'
@@ -56,16 +54,21 @@ class Order < ActiveRecord::Base
   def initialize(attributes=nil, options={})
     super
     self.order_date = Time.new
-    self.branch = 'HALSTED'
     self.status = Status::DORMANT
   end
   
   def save
     uuid = UUID.new
     self.id = uuid.generate
+    if self.order_number.nil? 
+      self.order_number = Store.next_order_number(self.branch)
+    end
     
-    self.order_number = Store.next_order_number(self.branch)
     super
+  end
+  
+  def status_description
+    Status.description(self.status)
   end
   
   def label
@@ -82,9 +85,5 @@ class Order < ActiveRecord::Base
   
   def total
     self.subtotal + self.finishing.to_f + self.delivery_charge.to_f
-  end
-
-  def self.attributes_to_ignore_when_comparing
-      [:delivery_date, :status]
   end
 end

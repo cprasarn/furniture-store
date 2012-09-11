@@ -6,21 +6,21 @@
     </div>
   </div>
   <div class="row">
-    <div class="col bold" style="width:20%">
-      Order Number
-    </div>
+    <div class="col bold" style="width:15%">Order Number</div>
     <div class="col bold" style="width:20%">Customer</div>
-    <div class="col bold" style="width:15%">Price</div>
-    <div class="col bold" style="width:15%"># of Items</div>
-    <div class="col bold" style="width:20%">Actions</div>
+    <div class="col bold" style="width:10%"># of Items</div>
+    <div class="col bold" style="width:10%">Price</div>
+    <div class="col bold" style="width:20%">Status</div>
+    <div class="col bold" style="width:15%">Actions</div>
   </div>
   <% @orders.each do |order| %>
   <div class="row">
-    <div class="col" style="width:20%"><%= order.order_number %></div>
+    <div class="col" style="width:15%"><%= order.order_number %></div>
     <div class="col" style="width:20%"><%= order.customer.name %></div>
-    <div class="col" style="width:15%"><%= order.price %></div>
-    <div class="col" style="width:15%"><%= order.items.size %></div>
-    <div class="col" style="width:20%">
+    <div class="col" style="width:10%"><%= order.items.size %></div>
+    <div class="col" style="width:10%"><%= order.price %></div>
+    <div class="col" style="width:20%"><%= order.status_description %></div>
+    <div class="col" style="width:15%">
         <%= link_to "Show", order %>
         &nbsp;
         <%= link_to "Edit", edit_order_path(order) %>

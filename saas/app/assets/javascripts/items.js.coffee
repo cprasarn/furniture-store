@@ -5,7 +5,6 @@ $(document).ready ->
   original_submit_text = $('#submit_button').text()
   
   $("form#new_item").bind("ajax:beforeSend", (evt, xhr, settings) ->
-    alert '[customer::id] ' + $('#customer_id').val()
     $('#submit_button').text 'Submitting...'
   ).bind("ajax:success", (evt, data, status, xhr) ->
     $form = $(this)
@@ -42,14 +41,14 @@ $(document).ready ->
 
 # Item object
 @Item = ->
-Item.get_items_by_order = (order_id) ->
+Item.get_items_by_order = (order_number) ->
     $.ajax
-      url: '/items/search'
-      dataType: 'json'
+      url: '/items/list'
+      dataType: 'html'
       data:
-        order_number: $('#order_number').val()
+        order_number: order_number
       success: (data) ->
-        alert data[0]
+        $('#items_list').html data
       error: (xhr, options, err) ->
         alert 'Items[' + xhr.status + '] ' + err
     return     

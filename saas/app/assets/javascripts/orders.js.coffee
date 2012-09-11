@@ -32,16 +32,7 @@ $(document).ready ->
       
       # Order detail
       order = ui.item.data
-      order_date = new Date(order.order_date)
-      $('#order_date').val(order_date.toString('MM/dd/yyyy'))
-      $('#order_price').val(order.price)
-      $('#order_sales_tax').val(order.sales_tax)
-      $('#order_subtotal').val(order.subtotal)
-      $('#order_finishing').val(order.finishing)
-      $('#order_delivery_charge').val(order.delivery_charge)
-      $('#order_total').val(order.total)
-      $('#order_estimated_time').val(order.estimated_time)
-      $('#order_delivery_option').val(order.delivery_option)
+      Order.fill_order_detail order
       
       # Customer detail
       $('#customer_id').val(order.customer_id)
@@ -50,6 +41,9 @@ $(document).ready ->
       # Address detail
       $('#address_id').val(order.address_id)
       Address.get_address_detail order.address_id 
+      
+      # Items
+      Item.get_items_by_order order.order_number
       
       return            
 
@@ -68,6 +62,25 @@ Order.clear_order_detail = ->
   $("#order_sales_tax").val ""
   $("#order_subtotal").val ""
   $("#order_total").val ""
+  return
+
+Order.fill_order_detail = (data) ->
+  order_date = undefined
+  order_date = new Date(data.order_date)
+  $("#order_id").val data.id
+  $("#order_date").val order_date.toString("MM/dd/yyyy")
+  $("#order_estimated_time").val data.estimated_time
+  $("#order_delivery_option").val data.delivery_option
+  $("#order_price").val data.price
+  $("#order_sales_tax").val data.sales_tax
+  subtotal = data.price + data.sales_tax
+  $("#order_subtotal").val subtotal
+  $('#order_finishing').val data.finishing
+  $('#order_delivery_charge').val data.delivery_charge
+  
+  total = subtotal + data.finishing + data.delivery_charge
+  $("#order_total").val total
+  return
 
 Order.get_order_detail = (id) ->
   $.ajax
@@ -77,14 +90,7 @@ Order.get_order_detail = (id) ->
       order_number: id
 
     success: (data) ->
-      order_date = undefined
-      order_date = new Date(data.order_date)
-      $("#order_id").val data.id
-      $("#order_date").val order_date.toString("MM/dd/yyyy")
-      $("#order_price").val data.price
-      $("#order_sales_tax").val data.sales_tax
-      $("#order_estimated_time").val data.estimated_time
-      $("#order_delivery_option").val data.delivery_option
+      Order.fill_order_detail data
 
     error: (xhr, options, err) ->
       alert "Order Detail[" + xhr.status + "] " + err
@@ -144,3 +150,9 @@ Order.update_tax_and_subtotal = ->
   $("#order_subtotal").val subtotal
   Order.update_total()
   Order.update_balance()
+  
+Order.adjust_subtotal = ->
+  return
+  
+Order.adjust_total = ->
+  return

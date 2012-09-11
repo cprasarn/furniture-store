@@ -1,9 +1,4 @@
 Saas::Application.routes.draw do
-  resources :notes
-
-  resources :payment_types
-
-  resources :user_roles
 
   get "static_pages/home"
   get "static_pages/help"
@@ -19,6 +14,8 @@ Saas::Application.routes.draw do
   match '/orders/search' => 'orders#search'
   match '/customers/search' => 'customers#search'
   match '/customers_addresses/search' => 'customers_addresses#search'
+  match '/items/search' => 'items#search'
+  match '/items/list' => 'items#list'
 
   resources :states
   resources :customers
@@ -28,5 +25,8 @@ Saas::Application.routes.draw do
   resources :items
   resources :ledgers
   resources :roles
+  resources :user_roles
+  resources :notes
+  resources :payment_types
 
 end

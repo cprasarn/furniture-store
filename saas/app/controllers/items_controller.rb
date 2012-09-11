@@ -26,7 +26,31 @@ class ItemsController < ApplicationController
       format.html # search.html.erb
     end
   end
+
+  # GET /search
+  def list
+    # Support multiple search criteria
+    conditions = Hash.new
     
+    # By order number
+    order_number = params[:order_number]
+    if order_number
+      conditions['order_number = ?'] = order_number
+    end
+
+    if ! conditions.empty?
+      conditions_list = Array.new
+      conditions_list << conditions.keys.join(' AND ')
+      conditions.values.each {|v| conditions_list << v }  
+      @items = Item.find(:all, :conditions => conditions_list)
+    end
+    
+    respond_to do |format|
+      format.json { render json: @items }
+      format.html # search.html.erb
+    end
+  end
+      
   # GET /items
   # GET /items.json
   def index

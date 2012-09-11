@@ -112,6 +112,7 @@ p {
 }
 
 .custom_text {
+  &.small { width: 20px; }
   &.short { width: 60px; }
   &.medium { width: 150px; }
   &.long { width: 200px; }

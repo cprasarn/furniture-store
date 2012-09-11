@@ -41,7 +41,7 @@ module Status
   def description(status)
     result = Array.new
     table = Status.table
-    table.each {|s| result << s.option if s.key & status}
+    table.each {|s| result << s.option if status == (s.key & status)}
       
     result_string = result * ','
     return result_string
