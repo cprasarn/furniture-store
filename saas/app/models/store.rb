@@ -40,8 +40,6 @@ class Store < ActiveRecord::Base
       if !connection.active? then
         connection.reconnect!
       end      
-    rescue NoMethodError
-      
     end
 
     return result    

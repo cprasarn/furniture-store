@@ -26,7 +26,7 @@ class Item < ActiveRecord::Base
   
   belongs_to :order, :foreign_key => 'order_number', :primary_key => 'order_number'
   
-  attr_accessor :name, :image_file
+  attr_accessor :name, :image_file, :sketchup
 
   validates :order_number, :presence => true
   validates :item_number, :presence => true

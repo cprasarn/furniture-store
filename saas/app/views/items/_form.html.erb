@@ -10,7 +10,39 @@
       </ul>
     </div>
   <% end %>
+  <% if @address.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@address.errors.count, "error") %> prohibited this adderss from being saved:</h2>
 
+      <ul>
+      <% @address.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% if @customer.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
+
+      <ul>
+      <% @customer.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% if @order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+      <% @order.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
   <!-- Order Detail -->
   <div id="order_detail" class="row">
     <%= fields_for :order, @order do |order| %>
@@ -59,7 +91,7 @@
   <!-- Customer Detail -->
   <div id="customer_detail" class="row">
     <%= fields_for :customer, @customer do |customer| %>
-    <%= customer.hidden_field :id %>
+    <%= customer.hidden_field :id, :value => @customer.id %>
     <div class="col" style="width:40%">
       <div class="row">
         <div class="col name" style="width:30%"><%= customer.label :name, 'NAME' %></div>
@@ -67,23 +99,23 @@
           :id => 'customer_name' %></div>
       </div>
       <%= fields_for :address, @address do |address| %>
-      <%= address.hidden_field :id %>
+      <%= address.hidden_field :id, :value => @address.id %>
       <div class="row">
         <div class="col name" style="width:30%"><%= address.label :street1, 'ADDRESS' %></div>
         <div class="col">
           <%= address.text_field :street1,
-            :value => 'street 1' %><br />
+            :value => (@address.is_empty(@address.street1) ? 'street 1' : @address.street1) %><br />
           <%= address.text_field :street2,
-            :value => 'street 2' %><br />
+            :value => (@address.is_empty(@address.street2) ? (@address.is_empty(@address.street1) ? 'street2' : '') : @address.street2) %><br />
           <%= address.text_field :city,
-            :value => 'city' %><br />
+            :value => (@address.is_empty(@address.city) ? (@address.is_empty(@address.street1) ? 'city' : '') : @address.city) %><br />
           <%= address.collection_select(:state, 
             @state_list, 
             :abbreviation, 
             :abbreviation, 
             { :prompt => 'state...' } ) %><br />
           <%= address.text_field :zip_code,
-            :value => 'zip code' %>
+            :value => (@address.is_empty(@address.zip_code) ? (@address.is_empty(@address.street1) ? 'zip code' : '') : @address.zip_code) %>
         </div>
       </div>
       <% end %>
@@ -164,7 +196,7 @@
       <div class="col" style="width:25%"><%= f.text_area :description,
         :rows => '2' %></div>
       <% if nil == @sketchup %>
-      <div class="col" style="width:10%"><%= f.file_field :image_file %></div>
+      <div class="col" style="width:10%"><%= file_field_tag :image_file %></div>
       <% end %>
     </div>
   </div>
@@ -190,7 +222,7 @@
       <div class="row">
         <div class="col name" style="width:150px">
           <%= order.label :subtotal, 'Subtotal' %></div>
-        <div class="col">&#36;<%= order.text_field :subtotal,
+        <div class="col">&#36;<%= text_field_tag :order_subtotal, @order.subtotal,
           :class => 'custom_text short right',
           :readonly => 'true' %></div>
       </div>
@@ -212,7 +244,7 @@
       <div class="row">
         <div class="col name" style="width:150px">
           <%= order.label 'Total' %></div>
-        <div class="col">&#36;<%= order.text_field :total,
+        <div class="col">&#36;<%= text_field_tag :order_total, @order.total,
           :class => 'custom_text short right',
           :readonly => 'true' %></div>
       </div>

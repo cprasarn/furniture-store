@@ -24,9 +24,22 @@ class Customer < ActiveRecord::Base
   has_many :orders
 
   validates :name, :length => { :maximum => 80 }, :presence => true
-  validates :home_phone, :uniqueness => true
-  validates :mobile_phone, :uniqueness => true
   validates :email, :presence => true, :uniqueness => true
+  validates_uniqueness_of :home_phone, :allow_nil => true, :allow_blank => true
+  validates_uniqueness_of :mobile_phone, :allow_nil => true, :allow_blank => true
+    
+  def self.attributes_to_ignore_when_comparing
+      [:id, :create_date, :modify_date, :status]
+  end
+
+  def identical?(other)
+    self. attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) ==
+    other.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+  end
+  
+  def self.not_empty(field)
+    return !(field.nil? or field.empty?)
+  end
   
   def initialize(attributes=nil, options={})
     super

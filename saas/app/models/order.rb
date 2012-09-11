@@ -21,7 +21,7 @@
 #
 
 require 'uuid'
-require 'order_number.rb'
+require 'store.rb'
 
 class Order < ActiveRecord::Base
   include Status
@@ -42,12 +42,8 @@ class Order < ActiveRecord::Base
   has_many :items, :primary_key => 'order_number', :foreign_key => 'order_number'
   has_many :ledgers, :primary_key => 'order_number', :foreign_key => 'order_number'
   
-  validates :order_number, :presence => true
-  validates :customer_id, :presence => true
-  validates :address_id, :presence => true
-  validates :price, :presence => true
-  validates_associated :address 
-     
+  validates_presence_of :order_number, :customer_id, :address_id, :price
+  
   def initialize(attributes=nil, options={})
     super
     self.order_date = Time.new
@@ -77,5 +73,9 @@ class Order < ActiveRecord::Base
   
   def total
     self.subtotal + self.finishing.to_f + self.delivery_charge.to_f
+  end
+
+  def self.attributes_to_ignore_when_comparing
+      [:delivery_date, :status]
   end
 end

@@ -22,6 +22,7 @@ Address.get_address_detail = (id) ->
     url: "/addresses/" + id
     dataType: "json"
     success: (data) ->
+      $("#address_id").val data.id
       $("#address_street1").val data.street1
       $("#address_street2").val data.street2
       $("#address_city").val data.city
@@ -43,11 +44,6 @@ Address.get_default_address_detail = (customer_id) ->
       if list.length
         first = list.shift()
         data = Address.get_address_detail(first.name)
-        $("#address_street1").val data.street1
-        $("#address_street2").val data.street2
-        $("#address_city").val data.city
-        $("#address_state").val data.state
-        $("#address_zip_code").val data.zip_code
-
+        
     error: (xhr, options, err) ->
       alert "Default Address[" + xhr.status + "] " + err

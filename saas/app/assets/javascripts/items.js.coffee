@@ -5,12 +5,15 @@ $(document).ready ->
   original_submit_text = $('#submit_button').text()
   
   $("form#new_item").bind("ajax:beforeSend", (evt, xhr, settings) ->
-    alert 'Submitting...'
+    alert '[customer::id] ' + $('#customer_id').val()
     $('#submit_button').text 'Submitting...'
   ).bind("ajax:success", (evt, data, status, xhr) ->
     $form = $(this)
-    alert 'success: ' + data.image_uri
-    window.location = "skp:export_image@" + data.image_uri
+    alert 'success[' + data.order_number + ']: ' + data.image_uri
+    if data.sketchup
+      window.location = "skp:export_image@" + data.image_uri
+    else
+      window.location = '/orders/search?order_number=' + data.order_number
   ).bind("ajax:complete", (evt, xhr, status) ->
     $('#submit_button').text = original_submit_text 
     return
