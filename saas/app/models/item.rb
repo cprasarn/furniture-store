@@ -29,7 +29,7 @@ class Item < ActiveRecord::Base
   attr_accessor :name, :image_file, :sketchup
 
   validates_presence_of :order_number, :item_number, :quantity, :description, :image_uri
-  validates_uniqueness_of :item_number, :image_uri
+  validates_uniqueness_of :item_number, :image_uri, :scope => [:order_number]
   
   def initialize(attributes=nil, options={})
     super

@@ -67,12 +67,13 @@ class OrdersController < ApplicationController
     end
   end
 
+  def is_sketchup
+    OrdersHelper.browser_type(request, 'SketchUp')
+  end
+  
   # GET /orders/new
   # GET /orders/new.json
   def new
-    # Sketchup Mode
-    @sketchup = params[:sketchup]
-    
     @item = Item.new
     
     @order = Order.new
@@ -91,7 +92,7 @@ class OrdersController < ApplicationController
     @delivery_option_list = DeliveryOptions.table
     @estimated_time_list = EstimatedCompletionTime.table
     @lead_source_list = LeadSources.table
-    @payment_method_list = PaymentMethods.table
+    @payment_method_list = PaymentMethods.table    
     
     respond_to do |format|
       format.html # new.html.erb
@@ -107,33 +108,30 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(params[:order])
-    @customer = Customer.new(params[:customer])
+    # Options
+    @state_list = State.order(:name)
+    @delivery_option_list = DeliveryOptions.table
+    @estimated_time_list = EstimatedCompletionTime.table
+    @lead_source_list = LeadSources.table
+    @payment_method_list = PaymentMethods.table
 
     respond_to do |format|
-      # Check order customer ID
-      if 0 == @order.customer_id.to_i
-        # Customer
-        if @customer.name.nil? or @customer.name.empty? then
-          @customer.errors.add(:name, "Please specify customer name")
-        elsif @customer.save
-          @order.customer_id = @customer.id
-        end
-      end
-                
-      if (!@order.errors.any?) && (!@customer.errors.any?) then
-        if @order.save
-          format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
-          format.json { render json: @order, status: :created, location: @order }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @order.errors, status: :unprocessable_entity }
-        end
+      result = OrdersHelper.process_order(request, params)
+      @order = result[0]
+      @customer = result[1]
+      @address = result[2]
+      @item = result[3]
+      
+      if !(@order.errors.any? or @customer.errors.any? or @address.errors.any? or @item.errors.any?) then
+        format.json { render json: @item }
+        format.html { redirect_to @order }
       else
         # Display error message
         format.html { render action: "new" }
         format.json { render json: @order.errors, status: :unprocessable_entity }
         format.json { render json: @customer.errors, status: :unprocessable_entity }
+        format.json { render json: @address.errors, status: :unprocessable_entity }
+        format.json { render json: @item.errors, status: :unprocessable_entity }
       end
     end    
   end

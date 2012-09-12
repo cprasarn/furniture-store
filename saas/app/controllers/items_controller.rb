@@ -80,29 +80,29 @@ class ItemsController < ApplicationController
   # GET /items/new
   # GET /items/new.json
   def new
-    # Sketchup Mode
-    @sketchup = OrdersHelper.browser_type(request, 'SketchUp')
-    
     @item = Item.new
     
-    @order = Order.new
-    @order.order_number = 'NEW ORDER'
-    
-    @customer = Customer.new
-    @address = Address.new
-    @address.state = 'IL'
-    
-    # Ledgers
-    @deposit_ledger = Ledger.new
-    @payment_ledger = Ledger.new
+    order_number = params[:order_number]
+    @order = (order_number.nil? ? Order.new : Order.by_order_number(order_number))
+    if @order.new_record?
+      @order.order_number = 'NEW ORDER' 
+      @customer = Customer.new
+      @address = Address.new
+      @address.state = 'IL'
+    else
+      @customer = @order.customer
+      @address = @order.address
+      @items = @order.items
+      @ledgers = @order.ledgers
+    end    
     
     # Options
     @state_list = State.order(:name)
     @delivery_option_list = DeliveryOptions.table
     @estimated_time_list = EstimatedCompletionTime.table
     @lead_source_list = LeadSources.table
-    @payment_method_list = PaymentMethods.table
-    
+    @payment_method_list = PaymentMethods.table    
+        
     # Output
     respond_to do |format|
       format.html # new.html.erb
@@ -118,7 +118,32 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    OrdersHelper.process_order(request, params)
+    # Options
+    @state_list = State.order(:name)
+    @delivery_option_list = DeliveryOptions.table
+    @estimated_time_list = EstimatedCompletionTime.table
+    @lead_source_list = LeadSources.table
+    @payment_method_list = PaymentMethods.table
+    
+    respond_to do |format|
+      result = OrdersHelper.process_order(request, params)
+      @order = result[0]
+      @customer = result[1]
+      @address = result[2]
+      @item = result[3]
+
+      if ! (@order.errors.any? or @customer.errors.any? or @address.errors.any? or @item.errors.any?) then
+        format.json { render json: @item }
+        format.html { redirect_to @order }
+      else
+        # Display error message
+        format.html { render action: "new" }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+        format.json { render json: @customer.errors, status: :unprocessable_entity }
+        format.json { render json: @address.errors, status: :unprocessable_entity }
+        format.json { render json: @item.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PUT /items/1

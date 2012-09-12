@@ -36,12 +36,14 @@ class Order < ActiveRecord::Base
     :order_date, :estimated_time, :delivery_date
    
   belongs_to :customer, :primary_key => 'id', :foreign_key => 'customer_id'
-  has_one :address, :primary_key => 'id', :foreign_key => 'address_id'
+  has_one :address, :primary_key => 'address_id', :foreign_key => 'id'
   has_many :items, :primary_key => 'order_number', :foreign_key => 'order_number'
   has_many :ledgers, :primary_key => 'order_number', :foreign_key => 'order_number'
   
   validates_presence_of :order_number, :customer_id, :address_id, :price
 
+  attr_accessor :branch, :balance
+  
   def self.attributes_to_ignore_when_comparing
     [:id, :order_date, :status]
   end
@@ -85,5 +87,10 @@ class Order < ActiveRecord::Base
   
   def total
     self.subtotal + self.finishing.to_f + self.delivery_charge.to_f
+  end
+
+  # Get by order number
+  def self.by_order_number(order_number)
+    Order.where(order_number: order_number).first
   end
 end
