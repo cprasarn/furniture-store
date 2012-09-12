@@ -6,7 +6,7 @@
           <%= address.text_field :street1,
             :value => (@address.is_empty(@address.street1) ? 'street 1' : @address.street1) %><br />
           <%= address.text_field :street2,
-            :value => (@address.is_empty(@address.street2) ? (@address.is_empty(@address.street1) ? 'street2' : '') : @address.street2) %><br />
+            :value => (@address.is_empty(@address.street2) ? (@address.is_empty(@address.street1) ? 'street 2' : '') : @address.street2) %><br />
           <%= address.text_field :city,
             :value => (@address.is_empty(@address.city) ? (@address.is_empty(@address.street1) ? 'city' : '') : @address.city) %><br />
           <%= address.collection_select(:state, 

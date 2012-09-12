@@ -3,16 +3,16 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 $(document).ready ->
   toggle_input_value 'address_street1', 'street 1'
-  toggle_input_value 'address_street2', 'street 2'
-  toggle_input_value 'address_city', 'city'
-  toggle_input_value 'address_zip_code', 'zip code'
+  toggle_input_value 'address_street2', 'street 2', 'address_street1'
+  toggle_input_value 'address_city', 'city', 'address_street1'
+  toggle_input_value 'address_zip_code', 'zip code', 'address_street1'
   return
 
 @Address = ->
 Address.clear_info = ->
   $("#address_id").val ""
-  $("#address_street1").val "street1"
-  $("#address_street2").val "street2"
+  $("#address_street1").val "street 1"
+  $("#address_street2").val "street 2"
   $("#address_city").val "city"
   $("#address_state").val "IL"
   $("#address_zip_code").val "zip code"

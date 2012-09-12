@@ -21,7 +21,7 @@
         :rows => '2' %></div>
       <div class="col" style="width:25%"><%= item.text_area :description,
         :rows => '2' %></div>
-      <% if @sketchup.nil? %>
+      <% if !@sketchup %>
       <div class="col" style="width:20%"><%= file_field_tag :image_file %></div>
       <% end %>
     </div>

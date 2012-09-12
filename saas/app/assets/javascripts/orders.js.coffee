@@ -98,62 +98,55 @@ Order.info = (id) ->
 
 
 Order.update_balance = ->
-  balance = undefined
-  deposit = undefined
-  order_total = undefined
-  _ref = undefined
-  order_total = $("#order_total").val()
-  if "" is order_total
-    order_total = 0
-  else
-    order_total = parseFloat(order_total)
-  deposit = $("#deposit_amount").val()
-  deposit = (if (_ref = "" is deposit)? then _ref else 0: parseFloat(deposit))
-  balance = order_total - deposit
-  $("#order_balance").val balance
+  total = Only2cNumber.format_number('order_total')
+  deposit = Only2cNumber.format_number('deposit_amount')
+  balance = Only2cNumber.format_number('#order_balance', order_total - deposit)
+  return
 
 Order.update_total = ->
-  delivery_charge = undefined
-  finishing = undefined
-  subtotal = undefined
-  total = undefined
-  subtotal = $("#order_subtotal").val()
-  if "" is subtotal
-    subtotal = 0
-  else
-    subtotal = parseFloat(subtotal)
-  finishing = $("#order_finishing").val()
-  if "" is finishing
-    finishing = 0
-  else
-    finishing = parseFloat(finishing)
-  delivery_charge = $("#order_delivery_charge").val()
-  if "" is delivery_charge
-    delivery_charge = 0
-  else
-    delivery_charge = parseFloat(delivery_charge)
-  total = subtotal + finishing + delivery_charge
-  $("#order_total").val total
-  Order.update_balance
+  subtotal = Only2cNumber.format_number('order_subtotal')
+  finishing = Only2cNumber.format_number('order_finishing')
+  delivery_charge = Only2cNumber.format_number('order_delivery_charge')
+  total = Only2cNumber.format_number('order_total', subtotal + finishing + delivery_charge)
+  
+  Order.update_balance()
+  return
 
 Order.update_tax_and_subtotal = ->
-  price = undefined
-  sales_tax = undefined
-  subtotal = undefined
-  price = $("#order_price").val()
-  if "" is price
-    price = 0
-  else
-    price = parseFloat(price)
-  sales_tax = 9.25 * 0.01 * price
-  subtotal = price + sales_tax
-  $("#order_sales_tax").val sales_tax
-  $("#order_subtotal").val subtotal
+  price = Only2cNumber.format_number('order_price')
+  sales_tax = Only2cNumber.format_number('order_sales_tax', store_sales_tax * price)  
+  subtotal = Only2cNumber.format_number('order_subtotal', price + sales_tax)
+  
   Order.update_total()
   Order.update_balance()
   
 Order.adjust_subtotal = ->
+  subtotal = Only2cNumber.format_number('order_subtotal')
+  price = Only2cNumber.format_number('order_price', subtotal / (1 + store_sales_tax))
+  sales_tax = Only2cNumber.format_number('order_sales_tax', store_sales_tax * price)
+  
+  Order.update_total()
+  return
+
+Order.adjust_total = ->
+  total = Only2cNumber.format_number('order_total')
+  finishing = Only2cNumber.format_number('order_finishing')
+  delivery_charge = Only2cNumber.format_number('order_delivery_charge')
+  subtotal = Only2cNumber.format_number('order_subtotal', total - finishing - delivery_charge)
+  
+  if 0 < subtotal and 0 < total
+    Order.adjust_subtotal()
+  else
+    Order.clear_price()
+  end
   return
   
-Order.adjust_total = ->
+Order.clear_price = ->
+  $('#order_price').val 0.00
+  $('#order_sales_tax').val 0.00
+  $('#order_subtotal').val 0.00
+  $('#order_finishing').val ''
+  $('#order_delivery_charge').val ''
+  $('#order_total').val 0.00
   return
+

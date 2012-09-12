@@ -14,6 +14,8 @@
 //= require jquery_ujs
 //= require_tree .
 
+var store_sales_tax = 9.25 * 0.01
+
 $(function() {
     $('.datepicker').datepicker();
     $('.note').tooltip();
@@ -26,9 +28,11 @@ function toggle_display_mode(id)
 	$('#' + id).css("display", display_mode);
 }
 
-function toggle_input_value(id, name)
+function toggle_input_value(id, name, scope)
 {
 	var object = $('#' + id)
+	var scope_object = (undefined == scope ? undefined : $('#' + scope)) 
+	
 	object.click(function() {
 	    var value = object.val();
 	    if (name == value) {
@@ -37,8 +41,14 @@ function toggle_input_value(id, name)
 	});
 	object.blur(function() {
 	    var value = object.val();
+	    var scope_value = (undefined == scope_object ? undefined : scope_object.val());
+	    var scope_default_value = (undefined == scope_object ? undefined : scope_object.prop('defaultValue'));
   	    if ('' === value) {
-  	    	object.val(name);
-	    }
+  	    	if (undefined == scope_value || '' == scope_value || scope_default_value == scope_value)
+  	    	{
+  	 	    	object.val(name);
+  	    	}
+ 	    }
 	});
 }
+

@@ -60,7 +60,7 @@ class Order < ActiveRecord::Base
   def save
     uuid = UUID.new
     self.id = uuid.generate
-    if self.order_number.nil? 
+    if self.order_number.nil? or 'NEW ORDER' == self.order_number
       self.order_number = Store.next_order_number(self.branch)
     end
     
