@@ -1,8 +1,10 @@
 include DeliveryOptions
 include LeadSources
+include Status
 
 class OrdersController < ApplicationController
   respond_to :html, :json, :js
+  before_filter :options, :only => [:new, :create, :edit, :update]
   
   # GET /search
   def search
@@ -30,6 +32,8 @@ class OrdersController < ApplicationController
     
     # If there is any search criteria specified, performs a search
     if ! conditions.empty?
+      conditions['status <> ?'] = Status::INACTIVE
+        
       conditions_list = Array.new
       conditions_list << conditions.keys.join(' AND ')
       conditions.values.each {|v| conditions_list << v }  
@@ -48,7 +52,8 @@ class OrdersController < ApplicationController
   # GET /orders.json
   def index
     # params[:sort]
-    @orders = Order.page(params[:page]).order(:order_number)
+    status_condition = 'status <> ' + Status::INACTIVE.to_s
+    @orders = Order.where(status_condition).page(params[:page]).order(:order_number)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -87,13 +92,6 @@ class OrdersController < ApplicationController
     @deposit_ledger = Ledger.new
     @payment_ledger = Ledger.new
     
-    # Options
-    @state_list = State.order(:name)
-    @delivery_option_list = DeliveryOptions.table
-    @estimated_time_list = EstimatedCompletionTime.table
-    @lead_source_list = LeadSources.table
-    @payment_method_list = PaymentMethods.table    
-    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @order }
@@ -103,18 +101,17 @@ class OrdersController < ApplicationController
   # GET /orders/1/edit
   def edit
     @order = Order.find(params[:id])
+    @customer = @order.customer
+    @address = @order.address
+    @items = @order.items
+    @ledgers = @order.ledgers
+    
+    @item = Item.new
   end
 
   # POST /orders
   # POST /orders.json
   def create
-    # Options
-    @state_list = State.order(:name)
-    @delivery_option_list = DeliveryOptions.table
-    @estimated_time_list = EstimatedCompletionTime.table
-    @lead_source_list = LeadSources.table
-    @payment_method_list = PaymentMethods.table
-
     respond_to do |format|
       result = OrdersHelper.process_order(request, params)
       @order = result[0]
@@ -139,15 +136,23 @@ class OrdersController < ApplicationController
   # PUT /orders/1
   # PUT /orders/1.json
   def update
-    @order = Order.find(params[:id])
-   
     respond_to do |format|
-      if @order.update_attributes(params[:order])
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
-        format.json { head :no_content }
+      result = OrdersHelper.process_order(request, params)
+      @order = result[0]
+      @customer = result[1]
+      @address = result[2]
+      @item = result[3]
+
+      if !(@order.errors.any? or @customer.errors.any? or @address.errors.any? or @item.errors.any?) then
+        format.json { render json: @item }
+        format.html { redirect_to @order }
       else
+        # Display error message
         format.html { render action: "edit" }
         format.json { render json: @order.errors, status: :unprocessable_entity }
+        format.json { render json: @customer.errors, status: :unprocessable_entity }
+        format.json { render json: @address.errors, status: :unprocessable_entity }
+        format.json { render json: @item.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -163,4 +168,14 @@ class OrdersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  protected
+    def options
+      # Options for select box
+      @state_list = State.order(:name)
+      @delivery_option_list = DeliveryOptions.table
+      @estimated_time_list = EstimatedCompletionTime.table
+      @lead_source_list = LeadSources.table
+      @payment_method_list = PaymentMethods.table
+    end
 end

@@ -40,17 +40,22 @@ class Order < ActiveRecord::Base
   has_many :items, :primary_key => 'order_number', :foreign_key => 'order_number'
   has_many :ledgers, :primary_key => 'order_number', :foreign_key => 'order_number'
   
-  validates_presence_of :order_number, :customer_id, :address_id, :price
+  validates_presence_of :order_number, :customer_id, :address_id, :price, :sales_tax, :delivery_option, :estimated_time
 
   attr_accessor :branch, :balance
   
-  def self.attributes_to_ignore_when_comparing
-    [:id, :order_date, :status]
-  end
-  
-  def identical?(other)
-    self. attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) ==
-    other.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+  def == (other)
+    (self.order_number == other.order_number) and
+    (self.customer_id == other.customer_id) and
+    (self.address_id == other.address_id) and
+    (self.lead_source == other.lead_source or ((self.lead_source.nil? or self.lead_source.empty?) and (other.lead_source.nil? or other.lead_source.empty?))) and
+    (self.estimated_time == other.estimated_time) and
+    (self.delivery_option == other.delivery_option) and
+    (self.price == other.price) and
+    (self.sales_tax == other.sales_tax) and
+    (self.finishing == other.finishing) and
+    (self.delivery_charge == other.delivery_charge) and
+    (self.delivery_date == other.delivery_date or ((self.delivery_date.nil? or self.delivery_date.empty?) and (other.delivery_date.nil? or other.delivery_date.empty?)))
   end
   
   def initialize(attributes=nil, options={})
@@ -62,6 +67,8 @@ class Order < ActiveRecord::Base
   def save
     uuid = UUID.new
     self.id = uuid.generate
+    self.modify_date = Time.new
+    
     if self.order_number.nil? or 'NEW ORDER' == self.order_number
       self.order_number = Store.next_order_number(self.branch)
     end
@@ -91,6 +98,6 @@ class Order < ActiveRecord::Base
 
   # Get by order number
   def self.by_order_number(order_number)
-    Order.where(order_number: order_number).first
+    Order.find_executable(:all, :conditions => ['order_number = ?  AND status <> ?', order_number, Status::INACTIVE]).first
   end
 end

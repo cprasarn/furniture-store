@@ -28,13 +28,13 @@ class Customer < ActiveRecord::Base
   validates_uniqueness_of :home_phone, :allow_nil => true, :allow_blank => true
   validates_uniqueness_of :mobile_phone, :allow_nil => true, :allow_blank => true
     
-  def self.attributes_to_ignore_when_comparing
-      [:id, :create_date, :modify_date, :status]
-  end
-
-  def identical?(other)
-    self. attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) ==
-    other.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+  def == (other)
+    (self.name == other.name) and
+    (self.home_phone == other.home_phone or ((self.home_phone.nil? or self.home_phone.empty?) and (other.home_phone.nil? or other.home_phone.empty?))) and
+    (self.mobile_phone == other.mobile_phone or ((self.mobile_phone.nil? or self.mobile_phone.empty?) and (other.mobile_phone.nil? or other.mobile_phone.empty?))) and
+    (self.business_phone == other.business_phone or ((self.business_phone.nil? or self.business_phone.empty?) and (other.business_phone.nil? or other.business_phone.empty?))) and
+    (self.fax == other.fax or ((self.fax.nil? or self.fax.empty?) and (other.fax.nil? or other.fax.empty?))) and
+    (self.email == other.email)
   end
   
   def self.not_empty(field)

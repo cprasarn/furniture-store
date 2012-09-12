@@ -9,13 +9,12 @@ class Address < ActiveRecord::Base
   validates_presence_of :street1, :city, :state, :zip_code
   validates_uniqueness_of :street1, :scope => [:street2, :zip_code]
     
-  def self.attributes_to_ignore_when_comparing
-    [:id, :create_date, :modify_date, :status]
-  end
-  
-  def identical?(other)
-    self. attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s)) ==
-    other.attributes.except(*self.class.attributes_to_ignore_when_comparing.map(&:to_s))
+  def == (other)
+    (self.street1 == other.street1) and
+    (self.street2 == other.street2 or ((self.street2.nil? or self.street2.empty?) and (other.street2.nil? or other.street2.empty?))) and
+    (self.city == other.city) and
+    (self.state == other.state) and
+    (self.zip_code == other.zip_code)
   end
   
   def initialize(attributes=nil, options={})

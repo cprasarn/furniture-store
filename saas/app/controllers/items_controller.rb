@@ -2,6 +2,7 @@ require 'Status.rb'
 
 class ItemsController < ApplicationController
   respond_to :html, :json, :js
+  before_filter :options, :only => [:new, :create, :edit]
 
   # GET /search
   def search
@@ -96,13 +97,6 @@ class ItemsController < ApplicationController
       @ledgers = @order.ledgers
     end    
     
-    # Options
-    @state_list = State.order(:name)
-    @delivery_option_list = DeliveryOptions.table
-    @estimated_time_list = EstimatedCompletionTime.table
-    @lead_source_list = LeadSources.table
-    @payment_method_list = PaymentMethods.table    
-        
     # Output
     respond_to do |format|
       format.html # new.html.erb
@@ -174,4 +168,14 @@ class ItemsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  protected
+    def options
+      # Options for select box
+      @state_list = State.order(:name)
+      @delivery_option_list = DeliveryOptions.table
+      @estimated_time_list = EstimatedCompletionTime.table
+      @lead_source_list = LeadSources.table
+      @payment_method_list = PaymentMethods.table
+    end
 end
