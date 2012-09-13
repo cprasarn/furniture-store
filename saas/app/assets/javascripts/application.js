@@ -17,6 +17,9 @@
 var store_sales_tax = 9.25 * 0.01
 
 $(function() {
+    $('.tabs').tabs({
+		event: "mouseover"
+	});
     $('.datepicker').datepicker();
     $('.note').tooltip();
 });

@@ -149,4 +149,3 @@ Order.clear_price = ->
   $('#order_delivery_charge').val ''
   $('#order_total').val 0.00
   return
-

@@ -3,7 +3,7 @@ class LedgersController < ApplicationController
   # GET /ledgers
   # GET /ledgers.json
   def index
-    @ledgers = Ledger.all
+    @ledgers = Ledger.order(:payment_date)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,11 +44,17 @@ class LedgersController < ApplicationController
   # POST /ledgers
   # POST /ledgers.json
   def create
-    @ledger = Ledger.new(params[:ledger])
-
+    @ledger = Ledger.new
+    @ledger.order_number = params[:order_number]
+    @ledger.payment_date = Date.strptime(params[:payment_date], "%m/%d/%Y")
+    @ledger.payment_type = params[:payment_type]
+    @ledger.payment_method = params[:payment_method]
+    @ledger.amount = params[:amount]
+    @ledger.status = params[:status]
+      
     respond_to do |format|
       if @ledger.save
-        format.html { redirect_to @ledger, notice: 'Ledger was successfully created.' }
+        format.html { render 'new_record' }
         format.json { render json: @ledger, status: :created, location: @ledger }
       else
         format.html { render action: "new" }

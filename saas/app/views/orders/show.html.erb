@@ -1,78 +1,39 @@
 <p id="notice"><%= notice %></p>
-
-<div class="row">
-  <div class="col header name">Order Number:</div>
-  <div class="col info"><%= @order.order_number %></div>
-</div>
-<div class="row">
-  <div class="col header name">Order Date:</div>
-  <div class="col"><%= (@order.order_date.blank? ? '' : @order.order_date.strftime('%m/%d/%Y')) %></div>
-</div>
-<div class="row">
-  <div class="col header name">Customer:</div>
-  <div class="col"><%= @order.customer.name %></div>
-  <div class="col action" style="display:none;">
-  </div>
-</div>
-
-<div class="row">
-  <div class="col header name">Lead Source:</div>
-  <div class="col"><%= @order.lead_source %></div>
-</div>
-
-<div>
-  <div class="row">
-    <div class="col name">Total Price:</div>
-    <div class="col"><%= @order.price %></div>
-  </div>
+<%= render 'orders/info_header' %>
+<div class="tabs">
+  <ul>
+    <li><a href="#order_detail">Detail</a></li>
+    <li><a href="#order_charge">Price</a></li>
+    <li><a href="#order_ledger">Payment</a></li>
+    <li><a href="#order_note">Note</a></li>
+  </ul>
+  <div id="order_detail">
+    <div id="order_info" class="row">
+      <%= render 'orders/info' %>
+    </div>
     
-  <div class="row">
-    <div class="col name">Delivery Option:</div>
-    <div class="col"><%= @order.delivery_option %></div>
-  </div>
+    <div id="customer" class="row">
+      <%= render 'customers/info' %>
+    </div>
     
-  <div class="row">
-    <div class="col name">Delivery Charge:</div>
-    <div class="col"><%= @order.delivery_charge %></div>
-  </div>
-    
-  <div class="row">
-    <div class="col name">Sales Tax:</div>
-    <div class="col"><%= @order.sales_tax %></div>
-  </div>
-    
-  <div class="row">
-    <div class="col name">Remaining Balance:</div>
-    <div class="col"><%= @order.balance %></div>
-  </div>
-</div>
-
-<div id="items_list" style="margin-top:20px;">
-  <div class="sub_portlet">
-    <div class="left">List of items under this order</div>
-    <div class="right link_action">
-      <%= link_to "New Item", new_item_path(:order_number => @order.order_number) %>
+    <div id="items" style="margin-top:20px;">
+      <%= render 'items/order_form' %>
     </div>
   </div>
-  <div class="row">
-    <div class="col header" style="width:30%">Description</div>
-    <div class="col header" style="width:40%">Item</div>
-    <div class="col_r header" style="width:15%">Actions</div>
+  
+  <div id="order_charge" class="row" style="margin-left:20%">
+    <%= render 'orders/info_price' %>
   </div>
-  <% @order.items.each do |item| %>
-  <div class="row">
-    <div class="col" style="width:30%"><%= item.description %></div>
-    <div class="col" style="width:40%">
-        <%= image_tag item.image_uri %>
-    </div>
-    <div class="col_r" style="width:15%;">
-        <%= link_to "Show", item %>
-        <%= link_to "Edit", edit_item_path(item) %>
-        <%= link_to 'Remove', item, confirm: 'Are you sure?', method: :delete %>
-    </div>
+  
+  <div id="order_ledger" class="row" style="margin-left:5%">
+    <%= render 'ledgers/info' %>
   </div>
-  <% end %>
+  
+  <div id="order_note" class="row" style="margin-left:5%">
+    <%= render 'notes/info_list' %>
+  </div>
 </div>
+<div class="row" style="height:20px"></div>
 
 <%= link_to 'Edit', edit_order_path(@order) %> |
 <%= link_to 'Back', orders_path %>

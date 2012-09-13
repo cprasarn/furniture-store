@@ -44,31 +44,39 @@
     </div>
   <% end %>
 
-  <!-- Order Detail -->
-  <div id="order_detail" class="row">
-    <%= render 'orders/order_form' %>
-  </div>
+  <div class="tabs">
+    <ul>
+      <li><a href="#order_detail">Detail</a></li>
+      <li><a href="#order_charge">Price</a></li>
+      <li><a href="#order_payment">Payment</a></li>
+      <li><a href="#order_note">Note</a></li>
+    </ul>
 
-  <!-- Customer Detail -->
-  <div id="customer_detail" class="row">
-    <%= render 'customers/order_form' %>
-  </div>
-  
-  <!-- Item -->
-  <div id="items">
-    <%= render 'items/order_form' %>
-  </div>
-  
-  <!-- Order Payment -->
-  <div id="order_ledger" class="row" style="padding-top:40px;">
-    <div id="order_charge" class="col payment" style="width:40%">
+    <div id="order_detail" class="row" style="padding-left:50px">
+      <div id="order_info" class="row">
+        <%= render 'orders/order_form' %>
+      </div>
+    
+      <div id="customer_detail" class="row">
+        <%= render 'customers/order_form' %>
+      </div>
+      
+      <div id="items" class="row" style="margin-top:20px">
+        <%= render 'items/order_form' %>
+      </div>
+    </div>
+      
+    <div id="order_charge" class="row" style="margin-left:30%">
       <%= render 'orders/price_form' %>
     </div>
-    <div id="ledgers" class="col payment" style="width:45%; <%= "display:none;" if @ledgers.nil? %>">
+    <div id="order_payment" class="row" style="padding-left:60px">
       <%= render 'ledgers/order_form' %>
     </div>
+    <div id="order_note" class="row" style="padding-left:60px">
+      <%= render 'notes/order_form' %>
+    </div>
   </div>
-  
+  <div class="row"></div>
   <div class="row" style="padding-top:20px;">
     <div class="col_r">
       <%= button_tag "Submit",
@@ -78,7 +86,5 @@
       %>
     </div>
   </div>
-  
-  <div class="row"></div>
 <% end %>
   

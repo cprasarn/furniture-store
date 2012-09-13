@@ -1,4 +1,4 @@
-      <%= fields_for :address, @address do |address| %>
+    <%= fields_for :address, @address do |address| %>
       <%= address.hidden_field :id, :value => @address.id %>
       <div class="row">
         <div class="col name" style="width:30%"><%= address.label :street1, 'ADDRESS' %></div>
@@ -18,4 +18,4 @@
             :value => (@address.is_empty(@address.zip_code) ? (@address.is_empty(@address.street1) ? 'zip code' : '') : @address.zip_code) %>
         </div>
       </div>
-      <% end %>
+    <% end %>

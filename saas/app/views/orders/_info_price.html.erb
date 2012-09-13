@@ -1,0 +1,29 @@
+    <%= fields_for :order, @order do |order| %>
+      <div class="row">
+        <div class="col name bold" style="width:30%">Price w/o finish</div>
+        <div class="col right_text" style="width:35%"><%= number_to_currency(@order.price) %></div>
+      </div>
+      <div class="row">
+        <div class="col name bold" style="width:30%">Tax</div>
+        <div class="col right_text" style="width:35%"><%= number_to_currency(@order.sales_tax) %></div>
+      </div>
+      <div class="row" style="width:65%"><hr /></div>     
+      <div class="row">
+        <div class="col name bold" style="width:30%">Subtotal</div>
+        <div class="col right_text" style="width:35%"><%= number_to_currency(@order.subtotal) %></div>
+      </div>
+      <div class="row" style="width:65%"><hr /></div>     
+      <div class="row">
+        <div class="col name bold" style="width:30%">Finishing</div>
+        <div class="col right_text" style="width:35%"><%= number_to_currency(@order.finishing) %></div>
+      </div>
+      <div class="row">
+        <div class="col name bold" style="width:30%">Delivery Charge</div>
+        <div class="col right_text" style="width:35%"><%= number_to_currency(@order.delivery_charge) %></div>
+      </div>
+      <div class="row" style="width:65%"><hr /></div>     
+      <div class="row">
+        <div class="col name bold" style="width:30%">Total</div>
+        <div class="col right_text" style="width:35%"><%= number_to_currency(@order.total) %></div>
+      </div>
+    <% end %>

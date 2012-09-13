@@ -37,7 +37,7 @@ class OrdersController < ApplicationController
       conditions_list = Array.new
       conditions_list << conditions.keys.join(' AND ')
       conditions.values.each {|v| conditions_list << v }  
-      @orders = Order.find(:all, :conditions => conditions_list)
+      @orders = Order.find(:all, :conditions => conditions_list, :order => 'order_number ASC')
     end
     
     # Output
@@ -65,6 +65,14 @@ class OrdersController < ApplicationController
   # GET /orders/1.json
   def show
     @order = Order.find(params[:id])
+    @customer = @order.customer
+    @address = @order.address
+    @items = @order.items
+    @ledgers = @order.ledgers
+    @notes = @order.notes
+
+    # Remaining balance
+    @remaining_balance = @order.remaining_balance
 
     respond_to do |format|
       format.html # show.html.erb
@@ -92,6 +100,9 @@ class OrdersController < ApplicationController
     @deposit_ledger = Ledger.new
     @payment_ledger = Ledger.new
     
+    # Remaining balance
+    @remaining_balance = 'NEW ORDER'
+    
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @order }
@@ -105,8 +116,14 @@ class OrdersController < ApplicationController
     @address = @order.address
     @items = @order.items
     @ledgers = @order.ledgers
+    @notes = @order.notes
     
-    @item = Item.new
+    @item = Item.new(order_number: @order.order_number)
+    @ledger = Ledger.new(order_number: @order.order_number)
+    @note = Note.new(order_number: @order.order_number)
+    
+    # Remaining balance
+    @remaining_balance = @order.remaining_balance
   end
 
   # POST /orders
@@ -176,6 +193,8 @@ class OrdersController < ApplicationController
       @delivery_option_list = DeliveryOptions.table
       @estimated_time_list = EstimatedCompletionTime.table
       @lead_source_list = LeadSources.table
+      @payment_type_list = PaymentType.order(:name)
       @payment_method_list = PaymentMethods.table
+      @status_list = Status.table
     end
 end

@@ -1,6 +1,6 @@
 module OrdersHelper
   def lead_source
-    return 'How did you hear about us?'
+    'How did you hear about us?'
   end
   
   def browser_type(request, type)

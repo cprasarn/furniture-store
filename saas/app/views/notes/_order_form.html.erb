@@ -1,0 +1,37 @@
+    <% if @notes %>
+      <div class="row bold">
+        <div class="col right right_text" style="width:100%">
+          <%= button_tag 'New Note',
+            :id => 'new_note_button',
+            :name => 'new_note_button',
+            :type => 'button'
+          %>
+        </div>
+      </div>
+      <div class="row header">
+        <div class="col header" style="width:15%">DATE</div>
+        <div class="col header" style="width:60%">NOTE</div>
+        <div class="col header" style="width:15%">ACTION</div>
+      </div>
+      <% if 0 < @notes.size %>
+        <% @notes.each_with_index do |note, i| %>
+        <div class="row">
+          <div class="col" style="width:15%"><%= note.create_date.strftime('%m/%d/%Y') %></div>
+          <div class="col" style="width:60%"><%= note.content %></div>
+          <div class="col" style="width:15%">
+            <%= link_to "Modify", edit_note_path(note) %>
+            &nbsp;&nbsp;
+            <%= link_to 'Remove', note, confirm: 'Are you sure?', method: :delete %>
+          </div>
+        </div>
+        <% end %>
+      <% else %>
+        <div id="note_no_record" class="row center" style="padding:100px 0px;">No records found</div>
+      <% end %>
+      <div id="new_note"></div>
+      <div id="new_note_dialog" class="modal_dialog" title="New Note" style="display:none;">
+        <div class="row" style="margin-left:10px">
+          <%= render 'notes/form' %>
+        </div>
+      </div>
+    <% end %>      

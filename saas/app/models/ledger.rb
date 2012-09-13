@@ -6,16 +6,11 @@ class Ledger < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
     
-  attr_accessible :order_number, :payment_method, :payment_type, :amount
+  attr_accessible :order_number, :payment_method, :payment_type, :amount, :payment_date, :status
   
   belongs_to :order, :foreign_key => 'order_number', :primary_key => 'order_number'
   
-  attr_accessor :name
-  
-  validates :order_number, :presence => true
-  validates :payment_method, :presence => true
-  validates :payment_type, :presence => true
-  validates :amount, :presence => true
+  validates_presence_of :order_number, :payment_method, :payment_type, :amount, :payment_date, :status
   
   def initialize(attributes=nil, options={})
     super
@@ -26,6 +21,7 @@ class Ledger < ActiveRecord::Base
   def save
     uuid = UUID.new
     self.id = uuid.generate
+    self.create_date = Time.new
     super
   end  
 end

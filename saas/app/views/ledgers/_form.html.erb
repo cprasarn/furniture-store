@@ -1,4 +1,4 @@
-<%= form_for(@ledger) do |f| %>
+<%= form_for @ledger, :remote => @ledger.new_record? do |ledger| %>
   <% if @ledger.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@ledger.errors.count, "error") %> prohibited this ledger from being saved:</h2>
@@ -11,15 +11,12 @@
     </div>
   <% end %>
 
-  <%= f.hidden_field :id %>
+  <%= ledger.hidden_field :id %>
+  <%= ledger.hidden_field :order_number %>
   <div class="row">
-    <div class="col name"><%= f.label :order_number %></div>
-    <div class="col"><%= f.text_field :order_number %></div>
-  </div>
-  <div class="row">
-    <div class="col name"><%= f.label :payment_type, 'Payment Type' %></div>
+    <div class="col name"><%= ledger.label :payment_type, 'Payment Type' %></div>
     <div class="col">
-      <%= f.collection_select(:payment_type, 
+      <%= ledger.collection_select(:payment_type, 
         @payment_type_list, 
         :name, 
         :description, 
@@ -27,9 +24,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="col name"><%= f.label :payment_method, 'Payment Method' %></div>
+    <div class="col name"><%= ledger.label :payment_method, 'Payment Method' %></div>
     <div class="col">
-      <%= f.collection_select(:payment_method, 
+      <%= ledger.collection_select(:payment_method, 
         @payment_method_list, 
         :name, 
         :description, 
@@ -37,27 +34,23 @@
     </div>
   </div>
   <div class="row">
-    <div class="col name"><%= f.label :amount %></div>
-    <div class="col"><%= f.text_field :amount %></div>
+    <div class="col name"><%= ledger.label :amount %></div>
+    <div class="col"><%= ledger.text_field :amount %></div>
   </div>
   <div class="row">
-    <div class="col name"><%= f.label :payment_date %></div>
-    <div class="col"><%= f.text_field :payment_date,
+    <div class="col name"><%= ledger.label :payment_date %></div>
+    <div class="col"><%= ledger.text_field :payment_date,
       :class => 'datepicker',
       :value => @ledger.payment_date.strftime('%m/%d/%Y') %></div>
   </div>
   <div class="row">
-    <div class="col name"><%= f.label :status %></div>
+    <div class="col name"><%= ledger.label :status %></div>
     <div class="col">
-      <%= f.collection_select(:status, 
+      <%= ledger.collection_select(:status, 
         @status_list, 
         :key, 
         :option, 
         { :prompt => 'select...' } ) %>
     </div>
-  </div>
-  
-  <div class="row actions" style="padding-top:20px;">
-    <%= f.submit %>
   </div>
 <% end %>

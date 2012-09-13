@@ -1,26 +1,26 @@
     <%= fields_for :order, @order do |order| %>
       <div class="row">
-        <div class="col name" style="width:150px">
+        <div class="col name" style="width:30%">
           <%= order.label :price, 'Price w/o finish' %></div>
         <div class="col">&#36;<%= order.text_field :price,
           :class => 'custom_text short right_text',
           :onchange => 'Order.update_tax_and_subtotal();' %></div>
       </div>
       <div class="row">
-        <div class="col name" style="width:150px">
+        <div class="col name" style="width:30%">
           <%= order.label :sales_tax, 'Tax' %></div>
         <div class="col">&#36;<%= order.text_field :sales_tax,
           :class => 'custom_text short right_text' %></div>
       </div>
       <div class="row">
-        <div class="col name" style="width:150px">
+        <div class="col name" style="width:30%">
           <%= order.label :subtotal, 'Subtotal' %></div>
         <div class="col">&#36;<%= text_field_tag :order_subtotal, @order.subtotal,
           :class => 'custom_text short right_text',
           :onchange => 'Order.adjust_subtotal();' %></div>
       </div>
       <div class="row">
-        <div class="col name" style="width:150px">
+        <div class="col name" style="width:30%">
           <%= order.label :finishing, 'Finishing' %></div>
         <div class="col">&#36;<%= order.text_field :finishing,
           :id => 'order_finishing',
@@ -28,14 +28,14 @@
           :onchange => 'Order.update_total();' %></div>
       </div>
       <div class="row">
-        <div class="col name" style="width:150px">
+        <div class="col name" style="width:30%">
           <%= order.label :pickup_charge, 'Delivery Charge' %></div>
         <div class="col">&#36;<%= order.text_field :delivery_charge,
           :class => 'custom_text short right_text',
           :onchange => 'Order.update_total();' %></div>
       </div>
       <div class="row">
-        <div class="col name" style="width:150px">
+        <div class="col name" style="width:30%">
           <%= order.label 'Total' %></div>
         <div class="col">&#36;<%= text_field_tag :order_total, @order.total,
           :class => 'custom_text short right_text',

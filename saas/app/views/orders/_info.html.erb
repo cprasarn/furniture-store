@@ -1,0 +1,24 @@
+    <%= fields_for :order, @order do |order| %>
+    <%= order.hidden_field :id, :value => @order.id %>
+    <div class="col" style="width:40%">
+      <div class="row">
+        <div class="col name bold" style="width:30%">DATE</div>
+        <div class="col"><%= order.label @order.order_date.strftime('%m/%d/%Y') %></div>
+      </div>
+      <div class="row">
+        <div class="col name bold" style="width:30%">ORDER#</div>
+        <div class="col"><%= order.label @order.order_number %></div>
+      </div>
+    </div>
+    <div class="col"></div>
+    <div class="col" style="width:50%">
+      <div class="row">
+        <div class="col bold" style="width:50%">Estimated Completion Time</div>
+        <div class="col" style="width:40%"><%= order.label @order.estimated_time.to_s + ' Weeks' %></div>
+      </div>
+      <div class="row">
+        <div class="col bold" style="width:50%">DELIVERY OPTION</div>
+        <div class="col" style="width:40%"><%= order.label @order.delivery_option %></div>
+      </div>
+    </div>
+    <% end %>

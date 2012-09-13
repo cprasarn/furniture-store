@@ -1,0 +1,11 @@
+      <%= fields_for :address, @address do |address| %>
+      <%= address.hidden_field :id, :value => @address.id %>
+      <div class="row">
+        <div class="col name bold" style="width:30%">ADDRESS</div>
+        <div class="col">
+          <%= @address.street1 %><br />
+          <%= @address.street2 %><br />
+          <%= @address.city %>, <%= @address.state %> <%= @address.zip_code %>
+        </div>
+      </div>
+      <% end %>

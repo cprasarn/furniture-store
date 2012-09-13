@@ -1,4 +1,4 @@
-<%= form_for(@note) do |f| %>
+<%= form_for @note, :remote => @note.new_record? do |note| %>
   <% if @note.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@note.errors.count, "error") %> prohibited this note from being saved:</h2>
@@ -11,19 +11,11 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :order_number %><br />
-    <%= f.text_field :order_number %>
-  </div>
-  <div class="field">
-    <%= f.label :note_type %><br />
-    <%= f.text_field :note_type %>
-  </div>
-  <div class="field">
-    <%= f.label :content %><br />
-    <%= f.text_field :content %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <%= note.hidden_field :order_number, :value => @note.order_number %>
+  <div class="row"><%= note.label :content, 'Note' %></div>
+  <div class="row">
+    <%= note.text_area :content,
+      :class => 'custom_text large',
+      :rows => '9' %>
   </div>
 <% end %>

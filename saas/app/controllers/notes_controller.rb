@@ -1,9 +1,11 @@
 
 class NotesController < ApplicationController
+  respond_to :html, :json, :js
+  
   # GET /notes
   # GET /notes.json
   def index
-    @notes = Note.all
+    @notes = Note.order(:create_date)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,11 +43,13 @@ class NotesController < ApplicationController
   # POST /notes
   # POST /notes.json
   def create
-    @note = Note.new(params[:note])
+    @note = Note.new
+    @note.order_number = params[:order_number]
+    @note.content = params[:content]
 
     respond_to do |format|
       if @note.save
-        format.html { redirect_to @note, notice: 'Note was successfully created.' }
+        format.html { render 'new_record' }
         format.json { render json: @note, status: :created, location: @note }
       else
         format.html { render action: "new" }

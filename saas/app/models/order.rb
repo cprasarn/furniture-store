@@ -37,8 +37,9 @@ class Order < ActiveRecord::Base
    
   belongs_to :customer, :primary_key => 'id', :foreign_key => 'customer_id'
   has_one :address, :primary_key => 'address_id', :foreign_key => 'id'
-  has_many :items, :primary_key => 'order_number', :foreign_key => 'order_number'
-  has_many :ledgers, :primary_key => 'order_number', :foreign_key => 'order_number'
+  has_many :items, :primary_key => 'order_number', :foreign_key => 'order_number', :conditions => "status IN (1,2,8,16)", :order => :item_number
+  has_many :ledgers, :primary_key => 'order_number', :foreign_key => 'order_number', :conditions => "status IN (1,2,8,16)", :order => :payment_date
+  has_many :notes, :primary_key => 'order_number', :foreign_key => 'order_number', :conditions => "status IN (1,2,8,16)", :order => :create_date
   
   validates_presence_of :order_number, :customer_id, :address_id, :price, :sales_tax, :delivery_option, :estimated_time
 
@@ -96,6 +97,12 @@ class Order < ActiveRecord::Base
     self.subtotal + self.finishing.to_f + self.delivery_charge.to_f
   end
 
+  def remaining_balance
+    result = self.total  
+    self.ledgers.each {|l| result -= l.amount}
+    return result  
+  end
+  
   # Get by order number
   def self.by_order_number(order_number)
     Order.find_executable(:all, :conditions => ['order_number = ?  AND status <> ?', order_number, Status::INACTIVE]).first

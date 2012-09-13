@@ -1,0 +1,24 @@
+    <% if @ledgers %>
+      <div class="row header">
+        <div class="col header" style="width:20%">DATE</div>
+        <div class="col header" style="width:20%">TYPE</div>
+        <div class="col header" style="width:20%">METHOD</div>
+        <div class="col header" style="width:20%">AMOUNT</div>
+        <div class="col header" style="width:10%">ACTION</div>
+      </div>
+      <% if 0 < @ledgers.size %>
+        <% @ledgers.each_with_index do |ledger, i| %>
+        <div class="row">
+          <div class="col" style="width:20%"><%= ledger.payment_date.strftime('%m/%d/%Y') %></div>
+          <div class="col" style="width:20%"><%= ledger.payment_type %></div>
+          <div class="col" style="width:20%"><%= ledger.payment_method %></div>
+          <div class="col" style="width:20%"><%= ledger.amount %></div>
+          <div class="col" style="width:10%">
+            <%= link_to "Show", ledger %>
+          </div>
+        </div>
+        <% end %>
+      <% else %>
+        <div class="row center" style="padding:65px 0px;">No records found</div>
+      <% end %>
+    <% end %>      
