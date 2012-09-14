@@ -44,7 +44,7 @@
     </div>
   <% end %>
 
-  <div class="tabs">
+  <div id="order_form_tabs">
     <ul>
       <li><a href="#order_detail">Detail</a></li>
       <li><a href="#order_charge">Price</a></li>
@@ -70,10 +70,20 @@
       <%= render 'orders/price_form' %>
     </div>
     <div id="order_payment" class="row" style="padding-left:60px">
-      <%= render 'ledgers/order_form' %>
+      <% if @ledgers %>
+        <%= render 'ledgers/ledger_dialog' %>
+        <div id="ledgers_list_form">
+          <%= render 'ledgers/list_form' %>
+        </div>
+      <% end %>
     </div>
     <div id="order_note" class="row" style="padding-left:60px">
-      <%= render 'notes/order_form' %>
+      <% if @notes %>
+        <%= render 'notes/note_dialog' %>
+        <div id="notes_list_form">
+          <%= render 'notes/list_form' %>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="row"></div>

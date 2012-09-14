@@ -1,5 +1,8 @@
 
 class LedgersController < ApplicationController
+  respond_to :html, :json, :js
+  before_filter :options, :only => [:new, :create, :edit, :update]
+  
   # GET /ledgers
   # GET /ledgers.json
   def index
@@ -44,17 +47,12 @@ class LedgersController < ApplicationController
   # POST /ledgers
   # POST /ledgers.json
   def create
-    @ledger = Ledger.new
-    @ledger.order_number = params[:order_number]
-    @ledger.payment_date = Date.strptime(params[:payment_date], "%m/%d/%Y")
-    @ledger.payment_type = params[:payment_type]
-    @ledger.payment_method = params[:payment_method]
-    @ledger.amount = params[:amount]
-    @ledger.status = params[:status]
+    @ledger = Ledger.new(params[:ledger])
+    @ledger.payment_date = DateTime.strptime(params[:ledger][:payment_date], "%m/%d/%Y")
       
     respond_to do |format|
       if @ledger.save
-        format.html { render 'new_record' }
+        format.html { render 'ledger' }
         format.json { render json: @ledger, status: :created, location: @ledger }
       else
         format.html { render action: "new" }
@@ -67,10 +65,16 @@ class LedgersController < ApplicationController
   # PUT /ledgers/1.json
   def update
     @ledger = Ledger.find(params[:id])
+    payment_date = DateTime.strptime(params[:ledger][:payment_date], "%m/%d/%Y")
+    params[:ledger][:payment_date] = payment_date
 
     respond_to do |format|
       if @ledger.update_attributes(params[:ledger])
-        format.html { redirect_to @ledger, notice: 'Ledger was successfully updated.' }
+        @order = @ledger.order
+        @ledgers = @order.ledgers
+        @remaining_balance = @order.remaining_balance
+        
+        format.html { render 'list_form' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -90,4 +94,12 @@ class LedgersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  protected
+    def options
+      # Options for select box
+      @payment_type_list = PaymentType.order(:name)
+      @payment_method_list = PaymentMethods.table
+      @status_list = Status.table
+    end    
 end

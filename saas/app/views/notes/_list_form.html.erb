@@ -1,0 +1,22 @@
+<% if @notes %>
+  <div class="row bold">
+    <div class="col right_text" style="width:100%">
+      <button type="button" id="new_note_button" onclick="Note.new_dialog()">New Note</button>
+    </div>
+  </div>
+  <div class="row header">
+    <div class="col header" style="width:15%">DATE</div>
+    <div class="col header" style="width:60%">NOTE</div>
+    <div class="col header center" style="width:15%">ACTION</div>
+  </div>
+  <% if 0 < @notes.size %>
+    <%= render :partial => 'notes/note', :collection => @notes %>
+  <% else %>
+    <div id="note_no_record" class="row center" style="padding:100px 0px;">No records found</div>
+  <% end %>
+  <div id="new_note"></div>
+<% else %>
+  <div id="note_new_order" class="row center" style="padding:100px 0px;">
+    This feature is only available for existing orders. 
+  </div>
+<% end %>      

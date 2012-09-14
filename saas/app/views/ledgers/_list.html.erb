@@ -1,0 +1,19 @@
+    <% if @ledgers %>
+      <% @no_action = true %>
+      <div class="row bold">Remaining Balance:
+        <span id="remaining_balance" class="remaining_balance"> 
+          <%= if 0 == @remaining_balance then 'PAID' else number_to_currency(@remaining_balance) end %>
+        </span>
+      </div>
+      <div class="row header">
+        <div class="col header" style="width:15%">DATE</div>
+        <div class="col header" style="width:20%">TYPE</div>
+        <div class="col header" style="width:20%">METHOD</div>
+        <div class="col header right_text" style="width:10%">AMOUNT</div>
+      </div>
+      <% if 0 < @ledgers.size %>
+        <%= render :partial => 'ledgers/ledger', :collection => @ledgers %>
+      <% else %>
+        <div class="row center" style="padding:65px 0px;">No records found</div>
+      <% end %>
+    <% end %>      

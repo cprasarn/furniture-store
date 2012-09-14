@@ -1,0 +1,11 @@
+  <div class="row" id="<%= note.id %>">
+    <div class="col" style="width:15%"><%= note.create_date.strftime('%m/%d/%Y') %></div>
+    <div class="col" style="width:60%"><%= note.content %></div>
+    <div class="col center" style="width:15%">
+    <% if ! @no_action %>
+      <%= link_to "Modify", "javascript: Note.modify_dialog('" +  note.id.to_s + "')" %>
+      &nbsp;&nbsp;
+      <%= link_to "Remove", "javascript: Note.remove_dialog('" +  note.id.to_s + "')" %>
+    <% end %>
+    </div>
+  </div>

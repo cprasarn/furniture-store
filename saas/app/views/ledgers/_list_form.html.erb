@@ -1,0 +1,29 @@
+<% if @ledgers %>
+  <div class="row bold">
+    <div class="col" style="width:48%">Remaining Balance:
+      <span id="remaining_balance" class="remaining_balance"> 
+      <%= if 0 == @remaining_balance then 'PAID' else number_to_currency(@remaining_balance) end %>
+      </span>
+    </div>
+    <div class="col right right_text" style="width:50%">
+      <button id="new_ledger_button" type="button" onclick="Ledger.new_dialog()">New Payment</button>
+    </div>
+  </div>
+  <div class="row header">
+    <div class="col header" style="width:15%">DATE</div>
+    <div class="col header" style="width:20%">TYPE</div>
+    <div class="col header" style="width:20%">METHOD</div>
+    <div class="col header right_text" style="width:10%">AMOUNT</div>
+    <div class="col header center" style="width:20%">ACTION</div>
+  </div>
+  <% if 0 < @ledgers.size %>
+    <%= render :partial => 'ledgers/ledger', :collection => @ledgers %>
+  <% else %>
+    <div id="ledger_no_record" class="row center" style="padding:100px 0px;">No records found</div>
+  <% end %>
+  <div id="new_ledger"></div>
+<% else %>
+  <div id="ledger_new_order" class="row center" style="padding:100px 0px;">
+    This feature is only available for existing orders. 
+  </div>
+<% end %>      

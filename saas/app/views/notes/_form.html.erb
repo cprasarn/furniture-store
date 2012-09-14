@@ -11,6 +11,7 @@
     </div>
   <% end %>
 
+  <%= note.hidden_field :id %>
   <%= note.hidden_field :order_number, :value => @note.order_number %>
   <div class="row"><%= note.label :content, 'Note' %></div>
   <div class="row">

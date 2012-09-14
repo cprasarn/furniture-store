@@ -43,13 +43,11 @@ class NotesController < ApplicationController
   # POST /notes
   # POST /notes.json
   def create
-    @note = Note.new
-    @note.order_number = params[:order_number]
-    @note.content = params[:content]
-
+    @note = Note.new(params[:note])
+    
     respond_to do |format|
       if @note.save
-        format.html { render 'new_record' }
+        format.html { render 'note' }
         format.json { render json: @note, status: :created, location: @note }
       else
         format.html { render action: "new" }
@@ -65,7 +63,8 @@ class NotesController < ApplicationController
 
     respond_to do |format|
       if @note.update_attributes(params[:note])
-        format.html { redirect_to @note, notice: 'Note was successfully updated.' }
+        @notes = @note.order.notes
+        format.html { render 'list_form' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

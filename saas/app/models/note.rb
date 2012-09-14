@@ -17,9 +17,11 @@ class Note < ActiveRecord::Base
   end
   
   def save
-    uuid = UUID.new
-    self.id = uuid.generate
     self.modify_date = Time.new
+    if self.id.nil? or self.id.empty? 
+      uuid = UUID.new
+      self.id = uuid.generate
+    end
     
     super
   end

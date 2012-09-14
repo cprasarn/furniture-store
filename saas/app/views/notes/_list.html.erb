@@ -1,0 +1,12 @@
+    <% if @notes %>
+      <% @no_action = true %>
+      <div class="row header">
+        <div class="col header" style="width:15%">DATE</div>
+        <div class="col header" style="width:60%">NOTE</div>
+      </div>
+      <% if 0 < @notes.size %>
+        <%= render :partial => '/notes/note', :collection => @notes %>
+      <% else %>
+        <div class="row center" style="padding:100px 0px;">No records found</div>
+      <% end %>
+    <% end %>      

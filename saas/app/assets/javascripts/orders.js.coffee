@@ -4,6 +4,12 @@
 $(document).ready ->
   toggle_input_value 'order_number', 'NEW ORDER'
   
+  ## Order Tabs
+  ## 'Payment' and 'Note' tabs are disabled for new order
+  $('#order_form_tabs').tabs()
+  if '' is $('#order_id').val()
+    $('#order_form_tabs').tabs('option', 'disabled', [2,3])
+  
   ## Order Number
   $('#order_number').change ->
     value = $('#order_number').val()
@@ -95,7 +101,6 @@ Order.info = (id) ->
 
     error: (xhr, options, err) ->
       alert "Order Detail[" + xhr.status + "] " + err
-
 
 Order.update_balance = ->
   total = Only2cNumber.format_number('order_total')

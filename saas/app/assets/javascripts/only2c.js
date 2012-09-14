@@ -23,3 +23,16 @@ Only2cNumber.format_currency = function(name, value, position) {
 	var result = Only2cNumber.parse_float(value, position);
 	$(id).val('$' + result);
 }
+
+function Only2cDate() {}
+
+Only2cDate.format_date = function(date_string, format) {
+	var f = (undefined == format ? 'MM/dd/yyyy' : format);
+	var date_pattern = /\d\d\d\d-\d\d-\d\d$/;
+	if (date_pattern.test(date_string))
+	{
+		date_string += ' 00:00:00';
+	}
+	var date = new Date(date_string.replace(/[TZ]/g, " "));
+	return date.toString(f);
+}

@@ -1,4 +1,4 @@
-<%= form_for @ledger, :remote => @ledger.new_record? do |ledger| %>
+<%= form_for @ledger, :remote => true do |ledger| %>
   <% if @ledger.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@ledger.errors.count, "error") %> prohibited this ledger from being saved:</h2>
@@ -14,7 +14,8 @@
   <%= ledger.hidden_field :id %>
   <%= ledger.hidden_field :order_number %>
   <div class="row">
-    <div class="col name"><%= ledger.label :payment_type, 'Payment Type' %></div>
+    <div class="col name" style="width:30%">
+      <%= ledger.label :payment_type, 'Payment Type' %></div>
     <div class="col">
       <%= ledger.collection_select(:payment_type, 
         @payment_type_list, 
@@ -24,7 +25,8 @@
     </div>
   </div>
   <div class="row">
-    <div class="col name"><%= ledger.label :payment_method, 'Payment Method' %></div>
+    <div class="col name" style="width:30%">
+      <%= ledger.label :payment_method, 'Payment Method' %></div>
     <div class="col">
       <%= ledger.collection_select(:payment_method, 
         @payment_method_list, 
@@ -34,17 +36,19 @@
     </div>
   </div>
   <div class="row">
-    <div class="col name"><%= ledger.label :amount %></div>
-    <div class="col"><%= ledger.text_field :amount %></div>
-  </div>
-  <div class="row">
-    <div class="col name"><%= ledger.label :payment_date %></div>
+    <div class="col name" style="width:30%"><%= ledger.label :payment_date, 'Payment Date' %></div>
     <div class="col"><%= ledger.text_field :payment_date,
       :class => 'datepicker',
       :value => @ledger.payment_date.strftime('%m/%d/%Y') %></div>
   </div>
   <div class="row">
-    <div class="col name"><%= ledger.label :status %></div>
+    <div class="col name" style="width:30%"><%= ledger.label :amount %></div>
+    <div class="col">&#36;<%= ledger.text_field :amount,
+      :class => 'custom_text medium' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col name" style="width:30%"><%= ledger.label :status %></div>
     <div class="col">
       <%= ledger.collection_select(:status, 
         @status_list, 

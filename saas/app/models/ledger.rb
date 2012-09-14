@@ -14,14 +14,16 @@ class Ledger < ActiveRecord::Base
   
   def initialize(attributes=nil, options={})
     super
-    self.payment_date = Time.new
-    self.status = Status::DORMANT
+    self.payment_date = Time.new if self.payment_date.nil?
+    self.status = Status::DORMANT if self.status.nil?
   end
   
   def save
-    uuid = UUID.new
-    self.id = uuid.generate
     self.create_date = Time.new
+    if self.id.nil? or self.id.empty?
+      uuid = UUID.new
+      self.id = uuid.generate
+    end
     super
-  end  
+  end
 end
