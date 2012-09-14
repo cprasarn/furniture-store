@@ -32,10 +32,6 @@ Ledger.remaining_balance = (new_ledger_amount) ->
     $('#remaining_balance').html remaining_balance
   return
 
-Ledger.total = ->
-  total = 0
-  $('#ledgers_list_form')
-
 Ledger.clear_dialog = ->
   $('#ledger_id').val ''
   $('#ledger_payment_date').val ''
